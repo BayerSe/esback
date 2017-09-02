@@ -1,6 +1,6 @@
 # esback
 
-This `esback` package contains function that can be used to evaluate and backtest
+The `esback` package contains function that can be used to evaluate and backtest
 [expected shortfall](https://en.wikipedia.org/wiki/Expected_shortfall) forecasts.
 
 ## Installation
@@ -11,10 +11,11 @@ This `esback` package contains function that can be used to evaluate and backtes
 
 ### GitHub (development)
 
-The latest version of package is under development at GitHub. You can install version from github with:
+The latest version of the package is under development at GitHub. 
+You can install the development version from github with:
 
     install.packages("devtools")
-    devtools::install_github('BayerSe/esback').
+    devtools::install_github("BayerSe/esback"").
 
 ## Examples
 
