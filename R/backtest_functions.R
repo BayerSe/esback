@@ -89,23 +89,23 @@ calibration_backtest <- function(r, q, e, s=NULL, alpha, hommel=TRUE) {
   V <- cbind(alpha - (r <= q),
              e - q + (r <= q) * (q - r) / alpha)
 
-  # Test functions; T x q x 2
-  H1 <- aperm(replicate(n, diag(2)))
+  # Test functions; n x q x 2
+  H1 <- aperm(replicate(n, diag(2)))  # q = 2
   if (!is.null(s)) {
-    H2 <- array(cbind((q - e) / alpha / s, 1 / s), dim = c(n, 1, 2))
-    H3 <- array(NA, dim = c(n, 4, 2))
+    H2 <- array(cbind((q - e) / alpha / s, 1 / s), dim = c(n, 1, 2))  # q = 1
+    H3 <- array(NA, dim = c(n, 4, 2))  # q = 4
     H3[,, 1] <- cbind(1, abs(q), 0, 0)
     H3[,, 2] <- cbind(0, 0, 1, 1 / s)
   }
 
-  # T x q matrices of h * V
+  # n x q matrices of h * V
   hV1 <- apply(H1, 2, function(x) rowSums(x * V))
   if (!is.null(s)) {
     hV2 <- apply(H2, 2, function(x) rowSums(x * V))
     hV3 <- apply(H3, 2, function(x) rowSums(x * V))
   }
 
-  # Estimates of the covariance matrix of hV
+  # Estimates of the covariance matrix of h * V
   omega1 <- crossprod(hV1) / n
   if (!is.null(s)) {
     omega2 <- crossprod(hV2) / n
