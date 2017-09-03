@@ -68,6 +68,9 @@ The following table provides details on the properties of the tests.
     esr_backtest(r = df$r, e = df$e2, alpha = 0.025)
 
 [McNeil & Frey (2000)]: https://arxiv.org/abs/1608.05498    
+
 [McNeil & Frey, 2000]: https://arxiv.org/abs/1608.05498
+
 [Nolde & Ziegel (2017)]: https://doi.org/10.1016/S0927-5398(00)00012-8)
+
 [Nolde & Ziegel, 2017]: https://doi.org/10.1016/S0927-5398(00)00012-8)
