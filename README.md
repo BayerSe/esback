@@ -11,11 +11,11 @@ esback is not on [CRAN](https://cran.r-project.org/) yet.
 
 ### GitHub (development)
 
-The latest version of the package is under development at GitHub. 
+The latest version of the package is under development at [GitHub](https://github.com/BayerSe/esback). 
 You can install the development version using these commands:
 
     install.packages("devtools")
-    devtools::install_github("BayerSe/esback"").
+    devtools::install_github("BayerSe/esback").
     
 ## Implemented Backtests
 
