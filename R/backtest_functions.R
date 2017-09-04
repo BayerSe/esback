@@ -16,13 +16,11 @@ check_inputs <- function(r, q=NULL, e, s=NULL, alpha=NULL) {
     }
   }
 
-  # Check for errors in thr input data
+  # Check for errors in the input data
+  # TODO: improve the check!
   df <- tryCatch(cbind(r, q, e, s),
-                 warning = function(w) NA, error = function(e) NA)
-
-  if (any(is.na(df)) | any(is.infinite(df))) {
-    stop("Some error with the input data!")
-  }
+                 warning = function(w) stop("Some error with the input data!"), 
+                 error = function(e) stop("Some error with the input data!"))
 }
 
 #' Exceedance Residuals Backtest
