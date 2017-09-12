@@ -4,7 +4,7 @@
 \alias{esr_backtest}
 \title{Expected Shortfall Regression Backtest}
 \usage{
-esr_backtest(r, e, alpha)
+esr_backtest(r, e, alpha, B = 0, avg_block_size = NULL)
 }
 \arguments{
 \item{r}{A vector of returns}
@@ -12,16 +12,17 @@ esr_backtest(r, e, alpha)
 \item{e}{A vector of expected shortfall forecasts}
 
 \item{alpha}{Scalar probability level in (0, 1)}
+
+\item{B}{Number of bootstrap samples. Set to 0 to disable bootstrapping.}
+
+\item{avg_block_size}{Average length of the blocks of the stationary bootstrap.}
 }
 \value{
-Returns a 2x2 matrix with p-values
+Returns a 2-dim. vector with p-values
 }
 \description{
-Contains two backtests using the esreg package.
-The first is an intercept-only backtest. The forecast error,
-r - e is regressed on an intercept, which is tested for zero.
-The second test regresses the expected shortfall forecasts
-and an intercept term on the returns and tests the coefficients for (0, 1).
+Regresses the expected shortfall forecasts and an intercept term on the returns
+and tests the coefficients for (0, 1).
 }
 \examples{
 data(df)

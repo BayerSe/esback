@@ -19,7 +19,7 @@ check_inputs <- function(r, q=NULL, e, s=NULL, alpha=NULL) {
   # Check for errors in the input data
   # TODO: improve the check!
   df <- tryCatch(cbind(r, q, e, s),
-                 warning = function(w) stop("Some error with the input data!"), 
+                 warning = function(w) stop("Some error with the input data!"),
                  error = function(e) stop("Some error with the input data!"))
 }
 
@@ -137,7 +137,9 @@ calibration_backtest <- function(r, q, e, s=NULL, alpha, hommel=TRUE) {
 }
 
 
-#' Expected Shortfall Regression Backtest
+#' Expected Shortfall Regression Intercept Backtest
+#'
+#' Tests whether the expected shortfall of the forecast error r - e is zero-
 #'
 #' Contains two backtests using the esreg package.
 #' The first is an intercept-only backtest. The forecast error,
@@ -146,33 +148,110 @@ calibration_backtest <- function(r, q, e, s=NULL, alpha, hommel=TRUE) {
 #' and an intercept term on the returns and tests the coefficients for (0, 1).
 #'
 #' @inheritParams check_inputs
+#' @param B Number of bootstrap samples. Set to 0 to disable bootstrapping.
+#' @param avg_block_size Average length of the blocks of the stationary bootstrap.
 #' @return Returns a 2x2 matrix with p-values
+#' @examples
+#' data(df)
+#' esr_backtest_intercept(r = df$r, e = df$e1, alpha = 0.025)
+#' esr_backtest_intercept(r = df$r, e = df$e2, alpha = 0.025)
+#' @references Bayer & Dimitriadis (2017)
+#' @export
+esr_backtest_intercept <- function(r, e, alpha, B=0, avg_block_size=NULL) {
+  check_inputs(r = r, e = e, alpha = alpha)
+
+  fit0 <- esreg::esreg(r - e ~ 1, alpha = alpha, g1 = 2, g2 = 4)
+  cov0 <- stats::vcov(object = fit0, sparsity = "iid", cond_var = "ind")[2, 2]
+  t0 <- unname(fit0$coefficients_e / sqrt(cov0))
+
+  # Asymptotic
+  pv0_2s <- 2 * (1 - stats::pnorm(abs(t0)))
+  pv0_1s <- stats::pnorm(t0)
+
+  # Bootstrap
+  if (B > 0) {
+    if (is.null(avg_block_size)) {
+      avg_block_size <- floor(sqrt(length(r)))
+    }
+    set.seed(1)
+    idx <- esreg:::stationary_bootstrap_indices(n = length(r), avg_block_size = avg_block_size, B = B)
+
+    tb <- apply(idx, 2, function(id) {
+      tryCatch({
+        fitb <- esreg::esreg(r[id] - e[id] ~ 1, alpha = alpha, g1 = 2, g2 = 4,
+                             control = list(terminate_after=1))
+        covb <- stats::vcov(fitb, sparsity="iid", cond_var="ind")[2, 2]
+        sb <- fitb$coefficients_e - fit0$coefficients_e
+        as.numeric(sb / sqrt(covb))
+      }, error=function(e) NA)
+    })
+    tb <- tb[!is.na(tb)]
+    pvb_2s <- mean(abs(t0) <= abs(tb))
+    pvb_1s <- mean(tb <= t0)
+  } else {
+    pvb_2s <- pvb_1s <- NA
+  }
+
+  # Return results
+  out <- rbind(c(pv0_2s, pv0_1s),
+               c(pvb_2s, pvb_1s))
+  rownames(out) <- c("Asymptotic", "Bootstrap")
+  colnames(out) <- c("Two_Sided", "One_Sided")
+  out
+}
+
+
+#' Expected Shortfall Regression Backtest
+#'
+#' Regresses the expected shortfall forecasts and an intercept term on the returns
+#' and tests the coefficients for (0, 1).
+#'
+#' @inheritParams check_inputs
+#' @inheritParams esr_backtest_intercept
+#' @return Returns a 2-dim. vector with p-values
 #' @examples
 #' data(df)
 #' esr_backtest(r = df$r, e = df$e1, alpha = 0.025)
 #' esr_backtest(r = df$r, e = df$e2, alpha = 0.025)
 #' @references Bayer & Dimitriadis (2017)
 #' @export
-esr_backtest <- function(r, e, alpha) {
+esr_backtest <- function(r, e, alpha, B=0, avg_block_size=NULL) {
   check_inputs(r = r, e = e, alpha = alpha)
 
-  # Test only the intercept
-  fit <- esreg::esreg(r - e ~ 1, alpha = alpha, g1 = 2, g2 = 4)
-  cov <- stats::vcov(object = fit, sparsity = "iid", cond_var = "ind")[2, 2]
-  statistic <- unname(fit$coefficients_e / sqrt(cov))
-  pv1_2s <- 2 * (1 - stats::pnorm(abs(statistic)))
-  pv1_1s <- stats::pnorm(statistic)
+  fit0 <- esreg::esreg(r ~ e, alpha = alpha, g1 = 2, g2 = 1)
+  s0 <- fit0$coefficients_e + c(0, -1)
+  cov0 <- stats::vcov(object = fit0, sparsity = "iid", cond_var = "scl_sp")[3:4, 3:4]
+  t0 <- unname(as.numeric(s0 %*% solve(cov0) %*% s0))
 
-  # Full test
-  fit <- esreg::esreg(r ~ e, alpha = alpha, g1 = 2, g2 = 1)
-  s <- fit$coefficients_e + c(0, -1)
-  cov <- stats::vcov(object = fit, sparsity = "iid", cond_var = "scl_sp")[3:4, 3:4]
-  statistic <- unname(as.numeric(s %*% solve(cov) %*% s))
-  pv2_2s <- 1 - stats::pchisq(statistic, 2)
+  # Asymptotic
+  pv0 <- 1 - stats::pchisq(t0, 2)
+
+  # Bootstrap
+  if (B > 0) {
+    if (is.null(avg_block_size)) {
+      avg_block_size <- floor(sqrt(length(r)))
+    }
+    set.seed(1)
+    idx <- esreg:::stationary_bootstrap_indices(n = length(r), avg_block_size = avg_block_size, B = B)
+
+    tb <- apply(idx, 2, function(id) {
+      tryCatch({
+        fitb <- esreg::esreg(r[id] ~ e[id], alpha = alpha, g1 = 2, g2 = 1,
+                             control = list(terminate_after=1))
+        covb <- stats::vcov(fitb, sparsity="nid", cond_var="scl_sp")[3:4, 3:4]
+        sb <- fitb$coefficients_e - fit0$coefficients_e
+        as.numeric(sb %*% solve(covb) %*% sb)
+      }, error=function(e) NA)
+    })
+    tb <- tb[!is.na(tb)]
+    pvb <- mean(tb >= t0)
+  } else {
+    pvb <- NA
+  }
 
   # Return results
-  out <- rbind(c(pv1_2s, pv1_1s), c(pv2_2s, NA))
-  rownames(out) <- c("Intercept_Only", "Full")
-  colnames(out) <- c("Two_Sided", "One_Sided")
+  out <- c(pv0, pvb)
+  names(out) <- c("Asymptotic", "Bootstrap")
   out
 }
+
