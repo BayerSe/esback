@@ -174,7 +174,7 @@ esr_backtest_intercept <- function(r, e, alpha, B=0, avg_block_size=NULL) {
       avg_block_size <- floor(sqrt(length(r)))
     }
     set.seed(1)
-    idx <- esreg:::stationary_bootstrap_indices(n = length(r), avg_block_size = avg_block_size, B = B)
+    idx <- stationary_bootstrap_indices(n = length(r), avg_block_size = avg_block_size, B = B)
 
     tb <- apply(idx, 2, function(id) {
       tryCatch({
@@ -232,7 +232,7 @@ esr_backtest <- function(r, e, alpha, B=0, avg_block_size=NULL) {
       avg_block_size <- floor(sqrt(length(r)))
     }
     set.seed(1)
-    idx <- esreg:::stationary_bootstrap_indices(n = length(r), avg_block_size = avg_block_size, B = B)
+    idx <- stationary_bootstrap_indices(n = length(r), avg_block_size = avg_block_size, B = B)
 
     tb <- apply(idx, 2, function(id) {
       tryCatch({
