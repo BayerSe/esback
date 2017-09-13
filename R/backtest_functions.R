@@ -238,7 +238,7 @@ esr_backtest <- function(r, e, alpha, B=0, avg_block_size=NULL) {
       tryCatch({
         fitb <- esreg::esreg(r[id] ~ e[id], alpha = alpha, g1 = 2, g2 = 1,
                              control = list(terminate_after=1))
-        covb <- stats::vcov(fitb, sparsity="nid", cond_var="scl_sp")[3:4, 3:4]
+        covb <- stats::vcov(fitb, sparsity="iid", cond_var="scl_sp")[3:4, 3:4]
         sb <- fitb$coefficients_e - fit0$coefficients_e
         as.numeric(sb %*% solve(covb) %*% sb)
       }, error=function(e) NA)
