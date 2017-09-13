@@ -179,7 +179,7 @@ esr_backtest_intercept <- function(r, e, alpha, B=0, avg_block_size=NULL) {
     tb <- apply(idx, 2, function(id) {
       tryCatch({
         fitb <- esreg::esreg(r[id] - e[id] ~ 1, alpha = alpha, g1 = 2, g2 = 4,
-                             control = list(terminate_after=1))
+                             control = list(terminate_after=0))
         covb <- stats::vcov(fitb, sparsity="iid", cond_var="ind")[2, 2]
         sb <- fitb$coefficients_e - fit0$coefficients_e
         as.numeric(sb / sqrt(covb))
@@ -237,7 +237,7 @@ esr_backtest <- function(r, e, alpha, B=0, avg_block_size=NULL) {
     tb <- apply(idx, 2, function(id) {
       tryCatch({
         fitb <- esreg::esreg(r[id] ~ e[id], alpha = alpha, g1 = 2, g2 = 1,
-                             control = list(terminate_after=1))
+                             control = list(terminate_after=0))
         covb <- stats::vcov(fitb, sparsity="iid", cond_var="scl_sp")[3:4, 3:4]
         sb <- fitb$coefficients_e - fit0$coefficients_e
         as.numeric(sb %*% solve(covb) %*% sb)
