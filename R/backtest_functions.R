@@ -31,9 +31,15 @@ check_inputs <- function(r, q=NULL, e, s=NULL, alpha=NULL) {
 #' @param B Number of bootstrap iterations
 #' @return Returns a 2x2 matrix with p-values
 #' @examples
-#' data(df)
-#' er_backtest(r = df$r, q = df$q1, e = df$e1, s = df$s1)
-#' er_backtest(r = df$r, q = df$q2, e = df$e2)
+#' data(risk_forecasts)
+#' r <- risk_forecasts$r
+#' q1 <- risk_forecasts$q1
+#' q2 <- risk_forecasts$q2
+#' e1 <- risk_forecasts$e1
+#' e2 <- risk_forecasts$e2
+#' s <- risk_forecasts$s1
+#' er_backtest(r = r, q = q1, e = e1, s = s1)
+#' er_backtest(r = r, q = q2, e = e2)
 #' @references \href{https://doi.org/10.1016/S0927-5398(00)00012-8}{McNeil & Frey (2000)}
 #' @export
 er_backtest <- function(r, q, e, s=NULL, B=1000) {
@@ -72,9 +78,15 @@ er_backtest <- function(r, q, e, s=NULL, B=1000) {
 #' @param hommel If TRUE, use Hommels correction, else use the classical Bonferroni correction.
 #' @return Returns a 2x2 matrix with p-values
 #' @examples
-#' data(df)
-#' calibration_backtest(r = df$r, q = df$q1, e = df$e1, s = df$s1, alpha = 0.025)
-#' calibration_backtest(r = df$r, q = df$q2, e = df$e2, alpha = 0.025)
+#' data(risk_forecasts)
+#' r <- risk_forecasts$r
+#' q1 <- risk_forecasts$q1
+#' q2 <- risk_forecasts$q2
+#' e1 <- risk_forecasts$e1
+#' e2 <- risk_forecasts$e2
+#' s <- risk_forecasts$s1
+#' calibration_backtest(r = r, q = q1, e = e1, s = s1, alpha = 0.025)
+#' calibration_backtest(r = r, q = q2, e = e2, alpha = 0.025)
 #' @references\href{https://arxiv.org/abs/1608.05498}{Nolde & Ziegel (2007)}
 #' @export
 calibration_backtest <- function(r, q, e, s=NULL, alpha, hommel=TRUE) {
@@ -152,9 +164,12 @@ calibration_backtest <- function(r, q, e, s=NULL, alpha, hommel=TRUE) {
 #' @param avg_block_size Average length of the blocks of the stationary bootstrap.
 #' @return Returns a 2x2 matrix with p-values
 #' @examples
-#' data(df)
-#' esr_backtest_intercept(r = df$r, e = df$e1, alpha = 0.025)
-#' esr_backtest_intercept(r = df$r, e = df$e2, alpha = 0.025)
+#' data(risk_forecasts)
+#' r <- risk_forecasts$r
+#' e1 <- risk_forecasts$e1
+#' e2 <- risk_forecasts$e2
+#' esr_backtest_intercept(r = r, e = e1, alpha = 0.025)
+#' esr_backtest_intercept(r = r, e = e2, alpha = 0.025)
 #' @references Bayer & Dimitriadis (2017)
 #' @export
 esr_backtest_intercept <- function(r, e, alpha, B=0, avg_block_size=NULL) {
@@ -210,9 +225,12 @@ esr_backtest_intercept <- function(r, e, alpha, B=0, avg_block_size=NULL) {
 #' @inheritParams esr_backtest_intercept
 #' @return Returns a 2-dim. vector with p-values
 #' @examples
-#' data(df)
-#' esr_backtest(r = df$r, e = df$e1, alpha = 0.025)
-#' esr_backtest(r = df$r, e = df$e2, alpha = 0.025)
+#' data(risk_forecasts)
+#' r <- risk_forecasts$r
+#' e1 <- risk_forecasts$e1
+#' e2 <- risk_forecasts$e2
+#' esr_backtest(r = r, e = e1, alpha = 0.025)
+#' esr_backtest(r = r, e = e2, alpha = 0.025)
 #' @references Bayer & Dimitriadis (2017)
 #' @export
 esr_backtest <- function(r, e, alpha, B=0, avg_block_size=NULL) {

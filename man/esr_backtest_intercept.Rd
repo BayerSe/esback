@@ -31,9 +31,12 @@ The second test regresses the expected shortfall forecasts
 and an intercept term on the returns and tests the coefficients for (0, 1).
 }
 \examples{
-data(df)
-esr_backtest_intercept(r = df$r, e = df$e1, alpha = 0.025)
-esr_backtest_intercept(r = df$r, e = df$e2, alpha = 0.025)
+data(risk_forecasts)
+r <- risk_forecasts$r
+e1 <- risk_forecasts$e1
+e2 <- risk_forecasts$e2
+esr_backtest_intercept(r = r, e = e1, alpha = 0.025)
+esr_backtest_intercept(r = r, e = e2, alpha = 0.025)
 }
 \references{
 Bayer & Dimitriadis (2017)

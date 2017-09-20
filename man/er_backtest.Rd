@@ -25,9 +25,15 @@ Tests whether the mean of the exceedance residuals, respectively the
 mean of the standardized exceedance residuals is zero.
 }
 \examples{
-data(df)
-er_backtest(r = df$r, q = df$q1, e = df$e1, s = df$s1)
-er_backtest(r = df$r, q = df$q2, e = df$e2)
+data(risk_forecasts)
+r <- risk_forecasts$r
+q1 <- risk_forecasts$q1
+q2 <- risk_forecasts$q2
+e1 <- risk_forecasts$e1
+e2 <- risk_forecasts$e2
+s <- risk_forecasts$s1
+er_backtest(r = r, q = q1, e = e1, s = s1)
+er_backtest(r = r, q = q2, e = e2)
 }
 \references{
 \href{https://doi.org/10.1016/S0927-5398(00)00012-8}{McNeil & Frey (2000)}

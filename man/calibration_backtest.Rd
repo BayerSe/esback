@@ -26,9 +26,15 @@ Returns a 2x2 matrix with p-values
 The simple and general conditional calibration backtests of Nolde & Ziegel (2017).
 }
 \examples{
-data(df)
-calibration_backtest(r = df$r, q = df$q1, e = df$e1, s = df$s1, alpha = 0.025)
-calibration_backtest(r = df$r, q = df$q2, e = df$e2, alpha = 0.025)
+data(risk_forecasts)
+r <- risk_forecasts$r
+q1 <- risk_forecasts$q1
+q2 <- risk_forecasts$q2
+e1 <- risk_forecasts$e1
+e2 <- risk_forecasts$e2
+s <- risk_forecasts$s1
+calibration_backtest(r = r, q = q1, e = e1, s = s1, alpha = 0.025)
+calibration_backtest(r = r, q = q2, e = e2, alpha = 0.025)
 }
 \references{
 \href{https://arxiv.org/abs/1608.05498}{Nolde & Ziegel (2007)}

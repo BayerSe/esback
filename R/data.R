@@ -14,7 +14,7 @@
 #' }
 #' @docType data
 #' @keywords datasets
-#' @name df
-#' @usage data(df)
+#' @name risk_forecasts
+#' @usage data(risk_forecasts)
 #' @format A data frame with 4396 rows and 6 variables
 NULL
