@@ -8,3 +8,8 @@ stationary_bootstrap_indices <- function(n, avg_block_size, B) {
     .Call('_esback_stationary_bootstrap_indices', PACKAGE = 'esback', n, avg_block_size, B)
 }
 
+#' @keywords internal
+circular_block_bootstrap_indices <- function(n, block_size, B) {
+    .Call('_esback_circular_block_bootstrap_indices', PACKAGE = 'esback', n, block_size, B)
+}
+

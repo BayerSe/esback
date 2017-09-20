@@ -19,9 +19,23 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// circular_block_bootstrap_indices
+Rcpp::NumericMatrix circular_block_bootstrap_indices(int n, int block_size, int B);
+RcppExport SEXP _esback_circular_block_bootstrap_indices(SEXP nSEXP, SEXP block_sizeSEXP, SEXP BSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< int >::type n(nSEXP);
+    Rcpp::traits::input_parameter< int >::type block_size(block_sizeSEXP);
+    Rcpp::traits::input_parameter< int >::type B(BSEXP);
+    rcpp_result_gen = Rcpp::wrap(circular_block_bootstrap_indices(n, block_size, B));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_esback_stationary_bootstrap_indices", (DL_FUNC) &_esback_stationary_bootstrap_indices, 3},
+    {"_esback_circular_block_bootstrap_indices", (DL_FUNC) &_esback_circular_block_bootstrap_indices, 3},
     {NULL, NULL, 0}
 };
 
