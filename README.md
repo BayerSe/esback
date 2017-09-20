@@ -15,7 +15,7 @@ The latest version of the package is under development at [GitHub](https://githu
 You can install the development version using these commands:
 
     install.packages("devtools")
-    devtools::install_github("BayerSe/esback").
+    devtools::install_github("BayerSe/esback")
     
 ## Implemented Backtests
 
