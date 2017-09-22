@@ -3,7 +3,8 @@ Type: Package
 Title: Expected Shortfall Backtesting
 Version: 0.1.0
 Date: 2017-09-02
-Authors@R: c(person('Sebastian', 'Bayer', email='bayerse@gmail.com', role=c('aut', 'cre')))
+Authors@R: c(person('Sebastian', 'Bayer', email='sebastian.bayer@uni-konstanz.de', role=c('aut', 'cre')), 
+             person('Timo', 'Dimitriadis', role='aut'))
 Description: Backtests, evaluates and visualizes forecasts of the expected shortfall risk measure.
 License: GPL-3
 Encoding: UTF-8
