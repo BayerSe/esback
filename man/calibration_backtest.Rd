@@ -28,13 +28,10 @@ The simple and general conditional calibration backtests of Nolde & Ziegel (2017
 \examples{
 data(risk_forecasts)
 r <- risk_forecasts$r
-q1 <- risk_forecasts$q1
-q2 <- risk_forecasts$q2
-e1 <- risk_forecasts$e1
-e2 <- risk_forecasts$e2
-s <- risk_forecasts$s1
-calibration_backtest(r = r, q = q1, e = e1, s = s1, alpha = 0.025)
-calibration_backtest(r = r, q = q2, e = e2, alpha = 0.025)
+q <- risk_forecasts$q
+e <- risk_forecasts$e
+s <- risk_forecasts$s
+calibration_backtest(r = r, q = q, e = e, s = s, alpha = 0.025)
 }
 \references{
 \href{https://arxiv.org/abs/1608.05498}{Nolde & Ziegel (2007)}

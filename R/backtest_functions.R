@@ -2,19 +2,19 @@
 #'
 #' Tests whether the mean of the exceedance residuals, respectively the
 #' mean of the standardized exceedance residuals is zero.
-#' @inheritParams check_inputs
+#'
+#' @inheritParams esr_backtest
+#' @param q A vector of Value-at-Risk forecasts
+#' @param s A vector of volatility forecasts
 #' @param B Number of bootstrap iterations
 #' @return Returns a 2x2 matrix with p-values
 #' @examples
 #' data(risk_forecasts)
 #' r <- risk_forecasts$r
-#' q1 <- risk_forecasts$q1
-#' q2 <- risk_forecasts$q2
-#' e1 <- risk_forecasts$e1
-#' e2 <- risk_forecasts$e2
-#' s <- risk_forecasts$s1
-#' er_backtest(r = r, q = q1, e = e1, s = s1)
-#' er_backtest(r = r, q = q2, e = e2)
+#' q <- risk_forecasts$q
+#' e <- risk_forecasts$e
+#' s <- risk_forecasts$s
+#' er_backtest(r = r, q = q, e = e, s = s)
 #' @references \href{https://doi.org/10.1016/S0927-5398(00)00012-8}{McNeil & Frey (2000)}
 #' @export
 er_backtest <- function(r, q, e, s=NULL, B=1000) {
@@ -48,19 +48,18 @@ er_backtest <- function(r, q, e, s=NULL, B=1000) {
 #'
 #' The simple and general conditional calibration backtests of Nolde & Ziegel (2017).
 #'
-#' @inheritParams check_inputs
+#' @inheritParams esr_backtest
+#' @param q A vector of Value-at-Risk forecasts
+#' @param s A vector of volatility forecasts
 #' @param hommel If TRUE, use Hommels correction, else use the classical Bonferroni correction.
 #' @return Returns a 2x2 matrix with p-values
 #' @examples
 #' data(risk_forecasts)
 #' r <- risk_forecasts$r
-#' q1 <- risk_forecasts$q1
-#' q2 <- risk_forecasts$q2
-#' e1 <- risk_forecasts$e1
-#' e2 <- risk_forecasts$e2
-#' s <- risk_forecasts$s1
-#' calibration_backtest(r = r, q = q1, e = e1, s = s1, alpha = 0.025)
-#' calibration_backtest(r = r, q = q2, e = e2, alpha = 0.025)
+#' q <- risk_forecasts$q
+#' e <- risk_forecasts$e
+#' s <- risk_forecasts$s
+#' calibration_backtest(r = r, q = q, e = e, s = s, alpha = 0.025)
 #' @references\href{https://arxiv.org/abs/1608.05498}{Nolde & Ziegel (2007)}
 #' @export
 calibration_backtest <- function(r, q, e, s=NULL, alpha, hommel=TRUE) {
@@ -125,22 +124,14 @@ calibration_backtest <- function(r, q, e, s=NULL, alpha, hommel=TRUE) {
 #'
 #' Tests whether the expected shortfall of the forecast error r - e is zero.
 #'
-#' Contains two backtests using the esreg package.
-#' The first is an intercept-only backtest. The forecast error,
-#' r - e is regressed on an intercept, which is tested for zero.
-#' The second test regresses the expected shortfall forecasts
-#' and an intercept term on the returns and tests the coefficients for (0, 1).
-#'
-#' @inheritParams check_inputs
+#' @inheritParams esr_backtest
 #' @param B Number of bootstrap samples. Set to 0 to disable bootstrapping.
 #' @return Returns a 2x2 matrix with p-values
 #' @examples
 #' data(risk_forecasts)
 #' r <- risk_forecasts$r
-#' e1 <- risk_forecasts$e1
-#' e2 <- risk_forecasts$e2
-#' esr_backtest_intercept(r = r, e = e1, alpha = 0.025)
-#' esr_backtest_intercept(r = r, e = e2, alpha = 0.025)
+#' e <- risk_forecasts$e
+#' esr_backtest_intercept(r = r, e = e, alpha = 0.025)
 #' @references Bayer & Dimitriadis (2017)
 #' @export
 esr_backtest_intercept <- function(r, e, alpha, B=0) {
@@ -188,19 +179,19 @@ esr_backtest_intercept <- function(r, e, alpha, B=0) {
 #' Regresses the expected shortfall forecasts and an intercept term on the returns
 #' and tests the coefficients for (0, 1).
 #'
-#' @inheritParams check_inputs
-#' @inheritParams esr_backtest_intercept
+#' @param r A vector of returns
+#' @param e A vector of expected shortfall forecasts
+#' @param alpha Scalar probability level in (0, 1)
+#' @param B Number of bootstrap samples. Set to 0 to disable bootstrapping.
 #' @return Returns a 2-dim. vector with p-values
 #' @examples
 #' data(risk_forecasts)
 #' r <- risk_forecasts$r
-#' e1 <- risk_forecasts$e1
-#' e2 <- risk_forecasts$e2
-#' esr_backtest(r = r, e = e1, alpha = 0.025)
-#' esr_backtest(r = r, e = e2, alpha = 0.025)
+#' e <- risk_forecasts$e
+#' esr_backtest(r = r, e = e, alpha = 0.025)
 #' @references Bayer & Dimitriadis (2017)
 #' @export
-esr_backtest <- function(r, e, alpha, B=0, avg_block_size=NULL) {
+esr_backtest <- function(r, e, alpha, B=0) {
   fit0 <- esreg::esreg(r ~ e, alpha = alpha, g1 = 2, g2 = 1)
   s0 <- fit0$coefficients_e + c(0, -1)
   cov0 <- stats::vcov(object = fit0, sparsity = "iid", cond_var = "scl_sp")[3:4, 3:4]

@@ -4,7 +4,7 @@
 \alias{esr_backtest}
 \title{Expected Shortfall Regression Backtest}
 \usage{
-esr_backtest(r, e, alpha, B = 0, avg_block_size = NULL)
+esr_backtest(r, e, alpha, B = 0)
 }
 \arguments{
 \item{r}{A vector of returns}
@@ -14,8 +14,6 @@ esr_backtest(r, e, alpha, B = 0, avg_block_size = NULL)
 \item{alpha}{Scalar probability level in (0, 1)}
 
 \item{B}{Number of bootstrap samples. Set to 0 to disable bootstrapping.}
-
-\item{avg_block_size}{Average length of the blocks of the stationary bootstrap.}
 }
 \value{
 Returns a 2-dim. vector with p-values
@@ -27,10 +25,8 @@ and tests the coefficients for (0, 1).
 \examples{
 data(risk_forecasts)
 r <- risk_forecasts$r
-e1 <- risk_forecasts$e1
-e2 <- risk_forecasts$e2
-esr_backtest(r = r, e = e1, alpha = 0.025)
-esr_backtest(r = r, e = e2, alpha = 0.025)
+e <- risk_forecasts$e
+esr_backtest(r = r, e = e, alpha = 0.025)
 }
 \references{
 Bayer & Dimitriadis (2017)

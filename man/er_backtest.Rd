@@ -27,13 +27,10 @@ mean of the standardized exceedance residuals is zero.
 \examples{
 data(risk_forecasts)
 r <- risk_forecasts$r
-q1 <- risk_forecasts$q1
-q2 <- risk_forecasts$q2
-e1 <- risk_forecasts$e1
-e2 <- risk_forecasts$e2
-s <- risk_forecasts$s1
-er_backtest(r = r, q = q1, e = e1, s = s1)
-er_backtest(r = r, q = q2, e = e2)
+q <- risk_forecasts$q
+e <- risk_forecasts$e
+s <- risk_forecasts$s
+er_backtest(r = r, q = q, e = e, s = s)
 }
 \references{
 \href{https://doi.org/10.1016/S0927-5398(00)00012-8}{McNeil & Frey (2000)}

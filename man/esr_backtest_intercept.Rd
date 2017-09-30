@@ -4,7 +4,7 @@
 \alias{esr_backtest_intercept}
 \title{Expected Shortfall Regression Intercept Backtest}
 \usage{
-esr_backtest_intercept(r, e, alpha, B = 0, avg_block_size = NULL)
+esr_backtest_intercept(r, e, alpha, B = 0)
 }
 \arguments{
 \item{r}{A vector of returns}
@@ -14,29 +14,18 @@ esr_backtest_intercept(r, e, alpha, B = 0, avg_block_size = NULL)
 \item{alpha}{Scalar probability level in (0, 1)}
 
 \item{B}{Number of bootstrap samples. Set to 0 to disable bootstrapping.}
-
-\item{avg_block_size}{Average length of the blocks of the stationary bootstrap.}
 }
 \value{
 Returns a 2x2 matrix with p-values
 }
 \description{
-Tests whether the expected shortfall of the forecast error r - e is zero-
-}
-\details{
-Contains two backtests using the esreg package.
-The first is an intercept-only backtest. The forecast error,
-r - e is regressed on an intercept, which is tested for zero.
-The second test regresses the expected shortfall forecasts
-and an intercept term on the returns and tests the coefficients for (0, 1).
+Tests whether the expected shortfall of the forecast error r - e is zero.
 }
 \examples{
 data(risk_forecasts)
 r <- risk_forecasts$r
-e1 <- risk_forecasts$e1
-e2 <- risk_forecasts$e2
-esr_backtest_intercept(r = r, e = e1, alpha = 0.025)
-esr_backtest_intercept(r = r, e = e2, alpha = 0.025)
+e <- risk_forecasts$e
+esr_backtest_intercept(r = r, e = e, alpha = 0.025)
 }
 \references{
 Bayer & Dimitriadis (2017)
