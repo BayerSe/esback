@@ -1,28 +1,3 @@
-#' Check Inputs
-#'
-#' Checks the input data.
-#' @param r A vector of returns
-#' @param q A vector of Value-at-Risk forecasts
-#' @param e A vector of expected shortfall forecasts
-#' @param s A vector of volatility forecasts
-#' @param alpha Scalar probability level in (0, 1)
-#' @keywords internal
-#' @export
-check_inputs <- function(r, q=NULL, e, s=NULL, alpha=NULL) {
-  # Check the probability
-  if (!is.null(alpha)) {
-    if ((alpha <= 0) | (1 <= alpha)) {
-      stop("alpha not in (0, 1)!")
-    }
-  }
-
-  # Check for errors in the input data
-  # TODO: improve the check!
-  df <- tryCatch(cbind(r, q, e, s),
-                 warning = function(w) stop("Some error with the input data!"),
-                 error = function(e) stop("Some error with the input data!"))
-}
-
 #' Exceedance Residuals Backtest
 #'
 #' Tests whether the mean of the exceedance residuals, respectively the
@@ -43,8 +18,6 @@ check_inputs <- function(r, q=NULL, e, s=NULL, alpha=NULL) {
 #' @references \href{https://doi.org/10.1016/S0927-5398(00)00012-8}{McNeil & Frey (2000)}
 #' @export
 er_backtest <- function(r, q, e, s=NULL, B=1000) {
-  check_inputs(r = r, q = q, e = e, s = s)
-
   fun <- function(x) {
     set.seed(1)
     boot_x <- matrix(sample(x, size = length(x) * B, replace = TRUE), nrow = B)
@@ -55,6 +28,7 @@ er_backtest <- function(r, q, e, s=NULL, B=1000) {
     c(pv_2s = mean(abs(t - mean(t)) >= abs(t0)),
       pv_1s = mean(t - mean(t) <= t0))
   }
+
 
   # Initialize return object
   out <- matrix(NA, 2, 2, dimnames = list(c("Simple", "Standardized"),
@@ -90,8 +64,6 @@ er_backtest <- function(r, q, e, s=NULL, B=1000) {
 #' @references\href{https://arxiv.org/abs/1608.05498}{Nolde & Ziegel (2007)}
 #' @export
 calibration_backtest <- function(r, q, e, s=NULL, alpha, hommel=TRUE) {
-  check_inputs(r = r, q = q, e = e, s = s, alpha = alpha)
-
   # Sample length
   n <- length(r)
 
@@ -173,8 +145,6 @@ calibration_backtest <- function(r, q, e, s=NULL, alpha, hommel=TRUE) {
 #' @references Bayer & Dimitriadis (2017)
 #' @export
 esr_backtest_intercept <- function(r, e, alpha, B=0, avg_block_size=NULL) {
-  check_inputs(r = r, e = e, alpha = alpha)
-
   fit0 <- esreg::esreg(r - e ~ 1, alpha = alpha, g1 = 2, g2 = 4)
   cov0 <- stats::vcov(object = fit0, sparsity = "iid", cond_var = "ind")[2, 2]
   t0 <- unname(fit0$coefficients_e / sqrt(cov0))
@@ -234,8 +204,6 @@ esr_backtest_intercept <- function(r, e, alpha, B=0, avg_block_size=NULL) {
 #' @references Bayer & Dimitriadis (2017)
 #' @export
 esr_backtest <- function(r, e, alpha, B=0, avg_block_size=NULL) {
-  check_inputs(r = r, e = e, alpha = alpha)
-
   fit0 <- esreg::esreg(r ~ e, alpha = alpha, g1 = 2, g2 = 1)
   s0 <- fit0$coefficients_e + c(0, -1)
   cov0 <- stats::vcov(object = fit0, sparsity = "iid", cond_var = "scl_sp")[3:4, 3:4]
