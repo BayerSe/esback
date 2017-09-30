@@ -123,7 +123,7 @@ calibration_backtest <- function(r, q, e, s=NULL, alpha, hommel=TRUE) {
 
 #' Expected Shortfall Regression Intercept Backtest
 #'
-#' Tests whether the expected shortfall of the forecast error r - e is zero-
+#' Tests whether the expected shortfall of the forecast error r - e is zero.
 #'
 #' Contains two backtests using the esreg package.
 #' The first is an intercept-only backtest. The forecast error,
@@ -133,7 +133,6 @@ calibration_backtest <- function(r, q, e, s=NULL, alpha, hommel=TRUE) {
 #'
 #' @inheritParams check_inputs
 #' @param B Number of bootstrap samples. Set to 0 to disable bootstrapping.
-#' @param avg_block_size Average length of the blocks of the stationary bootstrap.
 #' @return Returns a 2x2 matrix with p-values
 #' @examples
 #' data(risk_forecasts)
@@ -144,7 +143,7 @@ calibration_backtest <- function(r, q, e, s=NULL, alpha, hommel=TRUE) {
 #' esr_backtest_intercept(r = r, e = e2, alpha = 0.025)
 #' @references Bayer & Dimitriadis (2017)
 #' @export
-esr_backtest_intercept <- function(r, e, alpha, B=0, avg_block_size=NULL) {
+esr_backtest_intercept <- function(r, e, alpha, B=0) {
   fit0 <- esreg::esreg(r - e ~ 1, alpha = alpha, g1 = 2, g2 = 4)
   cov0 <- stats::vcov(object = fit0, sparsity = "iid", cond_var = "ind")[2, 2]
   t0 <- unname(fit0$coefficients_e / sqrt(cov0))
@@ -155,11 +154,9 @@ esr_backtest_intercept <- function(r, e, alpha, B=0, avg_block_size=NULL) {
 
   # Bootstrap
   if (B > 0) {
-    if (is.null(avg_block_size)) {
-      avg_block_size <- floor(sqrt(length(r)))
-    }
     set.seed(1)
-    idx <- stationary_bootstrap_indices(n = length(r), avg_block_size = avg_block_size, B = B)
+    n <- length(r)
+    idx <- matrix(sample(1:n, n*B, replace=TRUE), nrow=n)
 
     tb <- apply(idx, 2, function(id) {
       tryCatch({
@@ -214,11 +211,9 @@ esr_backtest <- function(r, e, alpha, B=0, avg_block_size=NULL) {
 
   # Bootstrap
   if (B > 0) {
-    if (is.null(avg_block_size)) {
-      avg_block_size <- floor(sqrt(length(r)))
-    }
     set.seed(1)
-    idx <- stationary_bootstrap_indices(n = length(r), avg_block_size = avg_block_size, B = B)
+    n <- length(r)
+    idx <- matrix(sample(1:n, n*B, replace=TRUE), nrow=n)
 
     tb <- apply(idx, 2, function(id) {
       tryCatch({
@@ -240,4 +235,3 @@ esr_backtest <- function(r, e, alpha, B=0, avg_block_size=NULL) {
   names(out) <- c("Asymptotic", "Bootstrap")
   out
 }
-
