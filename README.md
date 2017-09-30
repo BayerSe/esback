@@ -1,6 +1,6 @@
 # esback
 
-The esback package contains function that can be used to evaluate and backtest
+The esback package contains function that can be used to backtest
 [expected shortfall](https://en.wikipedia.org/wiki/Expected_shortfall) (ES) forecasts.
 
 ## Installation
@@ -54,8 +54,7 @@ The following table provides details on the requirements and properties of the t
        legend=c("Return", "APARCH-t", "Historical Simulation"))
 
     # Backtest the forecasts
-    esr_backtest(r = risk_forecasts$r, e = risk_forecasts$e1, alpha = 0.025)
-    esr_backtest(r = risk_forecasts$r, e = risk_forecasts$e2, alpha = 0.025)
+    esr_backtest(r = risk_forecasts$r, e = risk_forecasts$e, alpha = 0.025)
 
 [McNeil & Frey (2000)]: https://doi.org/10.1016/S0927-5398(00)00012-8
 [McNeil & Frey, 2000]: https://doi.org/10.1016/S0927-5398(00)00012-8
