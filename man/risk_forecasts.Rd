@@ -4,7 +4,7 @@
 \name{risk_forecasts}
 \alias{risk_forecasts}
 \title{Returns and risk forecasts for the S&P 500}
-\format{A data frame with 4396 rows and 6 variables}
+\format{A data frame with 4396 rows and 4 variables}
 \usage{
 data(risk_forecasts)
 }
@@ -15,12 +15,10 @@ probability 2.5\%.
 }
 \details{
 \itemize{
-  \item r. Daily log returns from January 3, 2000 to August 15, 2017 (4396 days).
-  \item q1. Value-at-Risk forecasts of the APARCH-t model.
-  \item q2. Value-at-Risk forecasts of the Historical Simulation approach.
-  \item e1. Expected shortfall forecasts of the APARCH-t model.
-  \item e2. Expected shortfall forecasts of the Historical Simulation approach.
-  \item s1. Volatility forecasts of the APARCH-t model.
+  \item r. Daily log returns from January 3, 2000 to September 29, 2017 (4465 days).
+  \item q. Value-at-Risk forecasts of the Historical Simulation approach.
+  \item e. Expected shortfall forecasts of the Historical Simulation approach.
+  \item s. Volatility forecasts of the Historical Simulation approach.
 }
 }
 \keyword{datasets}
