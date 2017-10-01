@@ -21,21 +21,20 @@ You can install the development version using these commands:
 
 These backtests are currently implemented:
 
+* Expected Shortfall Regression Backtest (Bayer & Dimitriadis, 2017)
 * Exceedance Residuals Backtest ([McNeil & Frey, 2000])
 * Conditional Calibration Backtest ([Nolde & Ziegel, 2017])
-* Expected Shortfall Regression Backtest (Bayer & Dimitriadis, 2017)
 
 The following table provides details on the requirements and properties of the tests.
 
-| Backtest                  | Source                     | Requires VaR | Requires Volatility | One Sided Alternative |
-|---------------------------|----------------------------|--------------|---------------------|-----------------------|
-| ER                        | [McNeil & Frey (2000)]     | x            |                     | x                     |
-| Standardized ER           | [McNeil & Frey (2000)]     | x            | x                   | x                     |
-| Simple CCT                | [Nolde & Ziegel (2017)]    | x            |                     | x                     |
-| General CCT               | [Nolde & Ziegel (2017)]    | x            | x                   | x                     |
-| intercept ESR             | Bayer & Dimitriadis (2017) |              |                     | x                     |
-| bivariate ESR             | Bayer & Dimitriadis (2017) |              |                     |                       |
-
+| Backtest        | Source                     | Requires VaR | Requires Volatility | One Sided Alternative |
+|-----------------|----------------------------|--------------|---------------------|-----------------------|
+| Intercept ESR   | Bayer & Dimitriadis (2017) |              |                     | x                     |
+| Bivariate ESR   | Bayer & Dimitriadis (2017) |              |                     |                       |
+| ER              | [McNeil & Frey (2000)]     | x            |                     | x                     |
+| Standardized ER | [McNeil & Frey (2000)]     | x            | x                   | x                     |
+| Simple CC       | [Nolde & Ziegel (2017)]    | x            |                     | x                     |
+| General CC      | [Nolde & Ziegel (2017)]    | x            | x                   | x                     |
 
 ## Examples
 
@@ -49,7 +48,7 @@ The following table provides details on the requirements and properties of the t
     plot(risk_forecasts$r, xlab = "Observation Number", ylab = "Return and ES forecasts")
     lines(risk_forecasts$e, col = "red", lwd = 2)
   
-    # Backtest the forecasts
+    # Backtest the forecast using the ESR test
     esr_backtest(r = risk_forecasts$r, e = risk_forecasts$e, alpha = 0.025)
 
 [McNeil & Frey (2000)]: https://doi.org/10.1016/S0927-5398(00)00012-8
