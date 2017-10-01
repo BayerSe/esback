@@ -47,12 +47,8 @@ The following table provides details on the requirements and properties of the t
     
     # Plot the returns and expected shortfall forecasts
     plot(risk_forecasts$r, xlab = "Observation Number", ylab = "Return and ES forecasts")
-    lines(risk_forecasts$e1, col = "red")
-    lines(risk_forecasts$e2, col = "blue")
-    legend("topright", col = c("black", "red", "blue"), 
-       lwd = 1, pch = c(1, NA, NA), lty = c(NA, 1, 1), cex = 0.75, 
-       legend=c("Return", "APARCH-t", "Historical Simulation"))
-
+    lines(risk_forecasts$e, col = "red", lwd = 2)
+  
     # Backtest the forecasts
     esr_backtest(r = risk_forecasts$r, e = risk_forecasts$e, alpha = 0.025)
 
