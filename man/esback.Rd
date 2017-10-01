@@ -13,7 +13,7 @@ expected shortfall forecasts.
 
 \itemize{
   \item \link[=er_backtest]{Exceedance Residuals Backtest (McNeil & Frey, 2000)}
-  \item \link[=calibration_backtest]{Conditional Calibration Backtest (Nolde & Ziegel, 2017)}
+  \item \link[=cc_backtest]{Conditional Calibration Backtest (Nolde & Ziegel, 2017)}
   \item \link[=esr_backtest]{Expeced Shortfall Regression Backtests (Bayer & Dimitriadis, 2017)}
 }
 }
