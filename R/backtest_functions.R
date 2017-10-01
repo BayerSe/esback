@@ -3,9 +3,7 @@
 #' Tests whether the mean of the exceedance residuals, respectively the
 #' mean of the standardized exceedance residuals is zero.
 #'
-#' @inheritParams esr_backtest
-#' @param q A vector of Value-at-Risk forecasts
-#' @param s A vector of volatility forecasts
+#' @inheritParams parameter_definition
 #' @param B Number of bootstrap iterations
 #' @return Returns a 2x2 matrix with p-values
 #' @examples
@@ -48,9 +46,7 @@ er_backtest <- function(r, q, e, s=NULL, B=1000) {
 #'
 #' The simple and general conditional calibration backtests of Nolde & Ziegel (2017).
 #'
-#' @inheritParams esr_backtest
-#' @param q A vector of Value-at-Risk forecasts
-#' @param s A vector of volatility forecasts
+#' @inheritParams parameter_definition
 #' @param hommel If TRUE, use Hommels correction, else use the classical Bonferroni correction.
 #' @return Returns a 2x2 matrix with p-values
 #' @examples
@@ -59,10 +55,10 @@ er_backtest <- function(r, q, e, s=NULL, B=1000) {
 #' q <- risk_forecasts$q
 #' e <- risk_forecasts$e
 #' s <- risk_forecasts$s
-#' calibration_backtest(r = r, q = q, e = e, s = s, alpha = 0.025)
+#' cc_backtest(r = r, q = q, e = e, s = s, alpha = 0.025)
 #' @references\href{https://arxiv.org/abs/1608.05498}{Nolde & Ziegel (2007)}
 #' @export
-calibration_backtest <- function(r, q, e, s=NULL, alpha, hommel=TRUE) {
+cc_backtest <- function(r, q, e, s=NULL, alpha, hommel=TRUE) {
   # Sample length
   n <- length(r)
 
@@ -124,8 +120,7 @@ calibration_backtest <- function(r, q, e, s=NULL, alpha, hommel=TRUE) {
 #'
 #' Tests whether the expected shortfall of the forecast error r - e is zero.
 #'
-#' @inheritParams esr_backtest
-#' @param B Number of bootstrap samples. Set to 0 to disable bootstrapping.
+#' @inheritParams parameter_definition
 #' @return Returns a 2x2 matrix with p-values
 #' @examples
 #' data(risk_forecasts)
@@ -133,6 +128,7 @@ calibration_backtest <- function(r, q, e, s=NULL, alpha, hommel=TRUE) {
 #' e <- risk_forecasts$e
 #' esr_backtest_intercept(r = r, e = e, alpha = 0.025)
 #' @references Bayer & Dimitriadis (2017)
+#' @seealso \code{\link{esr_backtest}} for the bivariate ESR backtest
 #' @export
 esr_backtest_intercept <- function(r, e, alpha, B=0) {
   fit0 <- esreg::esreg(r - e ~ 1, alpha = alpha, g1 = 2, g2 = 4)
@@ -179,10 +175,7 @@ esr_backtest_intercept <- function(r, e, alpha, B=0) {
 #' Regresses the expected shortfall forecasts and an intercept term on the returns
 #' and tests the coefficients for (0, 1).
 #'
-#' @param r A vector of returns
-#' @param e A vector of expected shortfall forecasts
-#' @param alpha Scalar probability level in (0, 1)
-#' @param B Number of bootstrap samples. Set to 0 to disable bootstrapping.
+#' @inheritParams parameter_definition
 #' @return Returns a 2-dim. vector with p-values
 #' @examples
 #' data(risk_forecasts)
@@ -190,6 +183,7 @@ esr_backtest_intercept <- function(r, e, alpha, B=0) {
 #' e <- risk_forecasts$e
 #' esr_backtest(r = r, e = e, alpha = 0.025)
 #' @references Bayer & Dimitriadis (2017)
+#' @seealso \code{\link{esr_backtest_intercept}} for the intercept ESR backtest
 #' @export
 esr_backtest <- function(r, e, alpha, B=0) {
   fit0 <- esreg::esreg(r ~ e, alpha = alpha, g1 = 2, g2 = 1)

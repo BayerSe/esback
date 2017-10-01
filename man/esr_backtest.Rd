@@ -7,9 +7,9 @@
 esr_backtest(r, e, alpha, B = 0)
 }
 \arguments{
-\item{r}{A vector of returns}
+\item{r}{A vector of returnss}
 
-\item{e}{A vector of expected shortfall forecasts}
+\item{e}{A vector of Value-at-Risk forecasts}
 
 \item{alpha}{Scalar probability level in (0, 1)}
 
@@ -30,4 +30,7 @@ esr_backtest(r = r, e = e, alpha = 0.025)
 }
 \references{
 Bayer & Dimitriadis (2017)
+}
+\seealso{
+\code{\link{esr_backtest_intercept}} for the intercept ESR backtest
 }

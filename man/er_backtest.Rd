@@ -7,11 +7,11 @@
 er_backtest(r, q, e, s = NULL, B = 1000)
 }
 \arguments{
-\item{r}{A vector of returns}
+\item{r}{A vector of returnss}
 
-\item{q}{A vector of Value-at-Risk forecasts}
+\item{q}{A vector of expected shortfall forecasts}
 
-\item{e}{A vector of expected shortfall forecasts}
+\item{e}{A vector of Value-at-Risk forecasts}
 
 \item{s}{A vector of volatility forecasts}
 
