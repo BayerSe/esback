@@ -1,7 +1,7 @@
 # esback
 
 The esback package contains function that can be used to backtest
-[expected shortfall](https://en.wikipedia.org/wiki/Expected_shortfall) (ES) forecasts.
+[expected shortfall](https://en.wikipedia.org/wiki/Expected_shortfall) forecasts.
 
 ## Installation
 
