@@ -4,33 +4,46 @@
 \alias{esr_backtest}
 \title{Expected Shortfall Regression Backtest}
 \usage{
-esr_backtest(r, e, alpha, B = 0)
+esr_backtest(r, q, e, alpha, version, B = 0)
 }
 \arguments{
 \item{r}{A vector of returnss}
+
+\item{q}{A vector of expected shortfall forecasts}
 
 \item{e}{A vector of Value-at-Risk forecasts}
 
 \item{alpha}{Scalar probability level in (0, 1)}
 
+\item{version}{Version of the backtest to be used}
+
 \item{B}{Number of bootstrap samples. Set to 0 to disable bootstrapping.}
 }
 \value{
-Returns a 2-dim. vector with p-values
+Returns a named vector with p-values.
 }
 \description{
-Regresses the expected shortfall forecasts and an intercept term on the returns
-and tests the coefficients for (0, 1).
+This function implements multiple expected shortfall regression (esreg)
+based backtests. Using the `version` argument, the following backtests ar
+available:
+\enumerate{
+  \item Regresses the expected shortfall forecasts on
+  the returns and tests the ES coefficients for (0, 1).
+  \item Regresses the quantile and the expected shortfall forecasts on
+  the returns and tests the ES coefficients for (0, 1).
+  \item Regresses the quantile and the expected shortfall forecasts on
+  the returns and tests the coefficients for (0, 1, 0, 1).
+  \item Tests whether the expected shortfall of the forecast error r - e is zero.
+  \item Tests whether the expected shortfall of the forecast error 1 - r/e is zero.
+}
 }
 \examples{
 data(risk_forecasts)
 r <- risk_forecasts$r
+q <- risk_forecasts$q
 e <- risk_forecasts$e
-esr_backtest(r = r, e = e, alpha = 0.025)
+esr_backtest(r = r, q = q, e = e, alpha = 0.025, version = 3)
 }
 \references{
 Bayer & Dimitriadis (2017)
-}
-\seealso{
-\code{\link{esr_backtest_intercept}} for the intercept ESR backtest
 }

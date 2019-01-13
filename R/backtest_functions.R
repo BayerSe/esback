@@ -116,107 +116,126 @@ cc_backtest <- function(r, q, e, s=NULL, alpha, hommel=TRUE) {
 }
 
 
-#' Expected Shortfall Regression Intercept Backtest
-#'
-#' Tests whether the expected shortfall of the forecast error r - e is zero.
-#'
-#' @inheritParams parameter_definition
-#' @return Returns a 2x2 matrix with p-values
-#' @examples
-#' data(risk_forecasts)
-#' r <- risk_forecasts$r
-#' e <- risk_forecasts$e
-#' esr_backtest_intercept(r = r, e = e, alpha = 0.025)
-#' @references Bayer & Dimitriadis (2017)
-#' @seealso \code{\link{esr_backtest}} for the bivariate ESR backtest
-#' @export
-esr_backtest_intercept <- function(r, e, alpha, B=0) {
-  fit0 <- esreg::esreg(r - e ~ 1, alpha = alpha, g1 = 2, g2 = 4)
-  cov0 <- stats::vcov(object = fit0, sparsity = "iid", cond_var = "ind")[2, 2]
-  t0 <- unname(fit0$coefficients_e / sqrt(cov0))
-
-  # Asymptotic
-  pv0_2s <- 2 * (1 - stats::pnorm(abs(t0)))
-  pv0_1s <- stats::pnorm(t0)
-
-  # Bootstrap
-  if (B > 0) {
-    set.seed(1)
-    n <- length(r)
-    idx <- matrix(sample(1:n, n*B, replace=TRUE), nrow=n)
-
-    tb <- apply(idx, 2, function(id) {
-      tryCatch({
-        fitb <- esreg::esreg(r[id] - e[id] ~ 1, alpha = alpha, g1 = 2, g2 = 4,
-                             early_stopping = 0)
-        covb <- stats::vcov(fitb, sparsity="iid", cond_var="ind")[2, 2]
-        sb <- fitb$coefficients_e - fit0$coefficients_e
-        as.numeric(sb / sqrt(covb))
-      }, error=function(e) NA)
-    })
-    tb <- tb[!is.na(tb)]
-    pvb_2s <- mean(abs(t0) <= abs(tb))
-    pvb_1s <- mean(tb <= t0)
-  } else {
-    pvb_2s <- pvb_1s <- NA
-  }
-
-  # Return results
-  out <- rbind(c(pv0_2s, pv0_1s),
-               c(pvb_2s, pvb_1s))
-  rownames(out) <- c("Asymptotic", "Bootstrap")
-  colnames(out) <- c("Two_Sided", "One_Sided")
-  out
-}
-
-
 #' Expected Shortfall Regression Backtest
 #'
-#' Regresses the expected shortfall forecasts and an intercept term on the returns
-#' and tests the coefficients for (0, 1).
+#' This function implements multiple expected shortfall regression (esreg)
+#' based backtests. Using the `version` argument, the following backtests ar
+#' available:
+#' \enumerate{
+#'   \item Regresses the expected shortfall forecasts on
+#'   the returns and tests the ES coefficients for (0, 1).
+#'   \item Regresses the quantile and the expected shortfall forecasts on
+#'   the returns and tests the ES coefficients for (0, 1).
+#'   \item Regresses the quantile and the expected shortfall forecasts on
+#'   the returns and tests the coefficients for (0, 1, 0, 1).
+#'   \item Tests whether the expected shortfall of the forecast error r - e is zero.
+#'   \item Tests whether the expected shortfall of the forecast error 1 - r/e is zero.
+#' }
 #'
 #' @inheritParams parameter_definition
-#' @return Returns a 2-dim. vector with p-values
+#' @param version Version of the backtest to be used
+#' @return Returns a named vector with p-values.
 #' @examples
 #' data(risk_forecasts)
 #' r <- risk_forecasts$r
+#' q <- risk_forecasts$q
 #' e <- risk_forecasts$e
-#' esr_backtest(r = r, e = e, alpha = 0.025)
+#' esr_backtest(r = r, q = q, e = e, alpha = 0.025, version = 3)
 #' @references Bayer & Dimitriadis (2017)
-#' @seealso \code{\link{esr_backtest_intercept}} for the intercept ESR backtest
 #' @export
-esr_backtest <- function(r, e, alpha, B=0) {
-  fit0 <- esreg::esreg(r ~ e, alpha = alpha, g1 = 2, g2 = 1)
-  s0 <- fit0$coefficients_e + c(0, -1)
-  cov0 <- stats::vcov(object = fit0, sparsity = "iid", cond_var = "scl_sp")[3:4, 3:4]
-  t0 <- unname(as.numeric(s0 %*% solve(cov0) %*% s0))
+esr_backtest <- function(r, q, e, alpha, version, B = 0) {
+  data <- data.frame(r = r, q = q, e = e)
 
-  # Asymptotic
-  pv0 <- 1 - stats::pchisq(t0, 2)
+  # Set the details for the selected version of the backtest
+  if (version == 1) {
+    model <- r ~ e
+    h0 <- c(NA, NA, 0, 1)
+    g_function <- c(2, 1)
+    estimator <- c('iid', 'scl_sp')
+    one_sided <- FALSE
+  } else if (version == 2) {
+    model <- r ~ q | e
+    h0 <- c(NA, NA, 0, 1)
+    g_function <- c(2, 1)
+    estimator <- c('iid', 'scl_sp')
+    one_sided <- FALSE
+  } else if (version == 3) {
+    model <- r ~ q | e
+    h0 <- c(0, 1, 0, 1)
+    g_function <- c(2, 1)
+    estimator <- c('nid', 'scl_sp')
+    one_sided <- FALSE
+  } else if (version == 4) {
+    model <- I(r - e) ~ 1
+    h0 <- c(NA, 0)
+    g_function <- c(2, 4)
+    estimator <- c('iid', 'ind')
+    one_sided <- TRUE
+  } else if (version == 5) {
+    model <- I(1 - r/e) ~ 1
+    h0 <- c(NA, 0)
+    g_function <- c(2, 4)
+    estimator <- c('iid', 'ind')
+    one_sided <- TRUE
+  }
 
-  # Bootstrap
+  # Fit the model
+  fit0 <- esreg::esreg(model, data = data,
+                       alpha = alpha, g1 = g_function[1], g2 = g_function[2])
+  cov0 <- stats::vcov(object = fit0,
+                      sparsity = estimator[1], cond_var = estimator[2])
+  s0 <- fit0$coefficients - h0
+  mask <- !is.na(h0)
+
+  # Compute the asymptotic test statistic and p-value
+  if (version %in% c(1, 2, 3)) {
+    t0 <- as.numeric(s0[mask] %*% solve(cov0[mask, mask]) %*% s0[mask])
+    pv0_1s <- NA
+    pv0_2s <- 1 - stats::pchisq(t0, sum(mask))
+  } else if (version %in% c(4, 5)) {
+    t0 <- s0[mask] / sqrt(cov0[mask, mask])
+    pv0_1s <- stats::pnorm(t0)
+    pv0_2s <- 2 * (1 - stats::pnorm(abs(t0)))
+  }
+
+  # Compute the bootstrap p-values
   if (B > 0) {
-    set.seed(1)
     n <- length(r)
     idx <- matrix(sample(1:n, n*B, replace=TRUE), nrow=n)
-
-    tb <- apply(idx, 2, function(id) {
+    bs_estimates <- apply(idx, 2, function(id) {
       tryCatch({
-        fitb <- esreg::esreg(r[id] ~ e[id], alpha = alpha, g1 = 2, g2 = 1,
-                             early_stopping = 0)
-        covb <- stats::vcov(fitb, sparsity = "iid", cond_var = "scl_sp")[3:4, 3:4]
-        sb <- fitb$coefficients_e - fit0$coefficients_e
-        as.numeric(sb %*% solve(covb) %*% sb)
+        fitb <- esreg::esreg(model, data = data[id,], alpha = alpha,
+                             g1 = g_function[1], g2 = g_function[2], early_stopping = 0)
+        sb <- fitb$coefficients - fit0$coefficients
+        covb <- stats::vcov(fitb, sparsity = estimator[1], cond_var = estimator[2])
+        list(sb = sb, covb = covb)
       }, error=function(e) NA)
     })
-    tb <- tb[!is.na(tb)]
-    pvb <- mean(tb >= t0)
+    if (version %in% c(1, 2, 3)) {
+      tb <- sapply(bs_estimates, function(x) {
+        as.numeric(x$sb[mask] %*% solve(x$covb[mask, mask]) %*% x$sb[mask])
+      })
+      tb <- tb[!is.na(tb)]
+      pvb_2s <- mean(tb >= t0)
+      pvb_1s <- NA
+    } else if (version %in% c(4, 5)) {
+      tb <- sapply(bs_estimates, function(x) {
+        x$sb[mask] / sqrt(x$covb[mask, mask])
+      })
+      tb <- tb[!is.na(tb)]
+      pvb_2s <- mean(abs(t0) <= abs(tb))
+      pvb_1s <- mean(tb <= t0)
+    }
   } else {
-    pvb <- NA
+    pvb_2s <- NA
+    pvb_1s <- NA
   }
 
   # Return results
-  out <- c(pv0, pvb)
-  names(out) <- c("Asymptotic", "Bootstrap")
-  out
+  c(
+    p_value_two_sided_asymptotic = pv0_2s,
+    p_value_one_sided_asymptotic = pv0_1s,
+    p_value_two_sided_bootstrap = pvb_2s,
+    p_value_one_sided_bootstrap = pvb_1s
+  )
 }
