@@ -24,8 +24,8 @@ Returns a named vector with p-values.
 }
 \description{
 This function implements multiple expected shortfall regression (esreg)
-based backtests. Using the `version` argument, the following backtests ar
-available:
+based backtests.
+Using the `version` argument, the following backtests are available:
 \enumerate{
   \item Regresses the expected shortfall forecasts on
   the returns and tests the ES coefficients for (0, 1).
@@ -45,5 +45,5 @@ e <- risk_forecasts$e
 esr_backtest(r = r, q = q, e = e, alpha = 0.025, version = 3)
 }
 \references{
-Bayer & Dimitriadis (2017)
+\href{https://arxiv.org/abs/1801.04112}{Bayer & Dimitriadis (2018)}
 }
