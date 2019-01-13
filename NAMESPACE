@@ -3,4 +3,3 @@
 export(cc_backtest)
 export(er_backtest)
 export(esr_backtest)
-export(joint_loss)

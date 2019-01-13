@@ -119,8 +119,8 @@ cc_backtest <- function(r, q, e, s=NULL, alpha, hommel=TRUE) {
 #' Expected Shortfall Regression Backtest
 #'
 #' This function implements multiple expected shortfall regression (esreg)
-#' based backtests. Using the `version` argument, the following backtests ar
-#' available:
+#' based backtests.
+#' Using the `version` argument, the following backtests are available:
 #' \enumerate{
 #'   \item Regresses the expected shortfall forecasts on
 #'   the returns and tests the ES coefficients for (0, 1).
@@ -141,7 +141,8 @@ cc_backtest <- function(r, q, e, s=NULL, alpha, hommel=TRUE) {
 #' q <- risk_forecasts$q
 #' e <- risk_forecasts$e
 #' esr_backtest(r = r, q = q, e = e, alpha = 0.025, version = 3)
-#' @references Bayer & Dimitriadis (2017)
+#' @references
+#' @references \href{https://arxiv.org/abs/1801.04112}{Bayer & Dimitriadis (2018)}
 #' @export
 esr_backtest <- function(r, q, e, alpha, version, B = 0) {
   data <- data.frame(r = r, q = q, e = e)
