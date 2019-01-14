@@ -152,10 +152,10 @@ cc_backtest <- function(r, q, e, s=NULL, alpha, hommel=TRUE) {
 #' @inheritParams parameter_definition
 #' @param version Version of the backtest to be used
 #' @return Returns a list with the following components:
-#' * p_value_two_sided_asymptotic
-#' * p_value_one_sided_asymptotic
-#' * p_value_two_sided_bootstrap
-#' * p_value_one_sided_bootstrap
+#' * pvalue_two_sided_asymptotic
+#' * pvalue_one_sided_asymptotic
+#' * pvalue_two_sided_bootstrap
+#' * pvalue_one_sided_bootstrap
 #' @examples
 #' data(risk_forecasts)
 #' r <- risk_forecasts$r
@@ -256,10 +256,10 @@ esr_backtest <- function(r, q, e, alpha, version, B = 0) {
 
   # Return results
   ret <- list(
-    p_value_two_sided_asymptotic = pv0_2s,
-    p_value_one_sided_asymptotic = pv0_1s,
-    p_value_two_sided_bootstrap = pvb_2s,
-    p_value_one_sided_bootstrap = pvb_1s
+    pvalue_twosided_asymptotic = pv0_2s,
+    pvalue_onesided_asymptotic = pv0_1s,
+    pvalue_twosided_bootstrap = pvb_2s,
+    pvalue_onesided_bootstrap = pvb_1s
   )
   ret
 }
