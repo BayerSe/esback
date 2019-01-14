@@ -20,21 +20,27 @@ esr_backtest(r, q, e, alpha, version, B = 0)
 \item{B}{Number of bootstrap samples. Set to 0 to disable bootstrapping.}
 }
 \value{
-Returns a named vector with p-values.
+Returns a list with the following components:
+\itemize{
+\item p_value_two_sided_asymptotic
+\item p_value_one_sided_asymptotic
+\item p_value_two_sided_bootstrap
+\item p_value_one_sided_bootstrap
+}
 }
 \description{
 This function implements multiple expected shortfall regression (esreg)
 based backtests.
-Using the `version` argument, the following backtests are available:
+Using the \code{version} argument, the following backtests are available:
 \enumerate{
-  \item Regresses the expected shortfall forecasts on
-  the returns and tests the ES coefficients for (0, 1).
-  \item Regresses the quantile and the expected shortfall forecasts on
-  the returns and tests the ES coefficients for (0, 1).
-  \item Regresses the quantile and the expected shortfall forecasts on
-  the returns and tests the coefficients for (0, 1, 0, 1).
-  \item Tests whether the expected shortfall of the forecast error r - e is zero.
-  \item Tests whether the expected shortfall of the forecast error 1 - r/e is zero.
+\item Regresses the expected shortfall forecasts on
+the returns and tests the ES coefficients for (0, 1).
+\item Regresses the quantile and the expected shortfall forecasts on
+the returns and tests the ES coefficients for (0, 1).
+\item Regresses the quantile and the expected shortfall forecasts on
+the returns and tests the coefficients for (0, 1, 0, 1).
+\item Tests whether the expected shortfall of the forecast error r - e is zero.
+\item Tests whether the expected shortfall of the forecast error 1 - r/e is zero.
 }
 }
 \examples{

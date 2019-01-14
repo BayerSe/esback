@@ -5,7 +5,11 @@
 #'
 #' @inheritParams parameter_definition
 #' @param B Number of bootstrap iterations
-#' @return Returns a 2x2 matrix with p-values
+#' @return Returns a list with the following components:
+#' * pvalue_twosided_simple
+#' * pvalue_onesided_simple
+#' * pvalue_twosided_standardized
+#' * pvalue_onesided_standardized
 #' @examples
 #' data(risk_forecasts)
 #' r <- risk_forecasts$r
@@ -13,10 +17,11 @@
 #' e <- risk_forecasts$e
 #' s <- risk_forecasts$s
 #' er_backtest(r = r, q = q, e = e, s = s)
-#' @references \href{https://doi.org/10.1016/S0927-5398(00)00012-8}{McNeil & Frey (2000)}
+#' @references [McNeil & Frey (2000)](https://doi.org/10.1016/S0927-5398(00)00012-8)
 #' @export
-er_backtest <- function(r, q, e, s=NULL, B=1000) {
-  fun <- function(x) {
+#' @md
+er_backtest <- function(r, q, e, s = NULL, B = 1000) {
+  er_backtest_fun <- function(x) {
     set.seed(1)
     boot_x <- matrix(sample(x, size = length(x) * B, replace = TRUE), nrow = B)
     f <- function(x) mean(x) / stats::sd(x) * sqrt(length(x))
@@ -27,28 +32,38 @@ er_backtest <- function(r, q, e, s=NULL, B=1000) {
       pv_1s = mean(t - mean(t) <= t0))
   }
 
-
-  # Initialize return object
-  out <- matrix(NA, 2, 2, dimnames = list(c("Simple", "Standardized"),
-                                          c("Two_Sided", "One_Sided")))
-  # Store test statistic and p-values
-  out[1, ] <- fun(x = (r - e)[r <= q])
+  # Get the backtest p-values
+  er_simple <- er_backtest_fun((r - e)[r <= q])
   if (!is.null(s)) {
-    out[2, ] <- fun(x = ((r - e) / s)[r <= q])
+    er_standardized <- er_backtest_fun(((r - e) / s)[r <= q])
+  } else {
+    er_standardized <- c(NA, NA)
   }
 
   # Return results
-  out
+  ret <- list(
+    pvalue_twosided_simple = unname(er_simple[1]),
+    pvalue_onesided_simple = unname(er_simple[2]),
+    pvalue_twosided_standardized = unname(er_standardized[1]),
+    pvalue_onesided_standardized = unname(er_standardized[2])
+  )
+  ret
 }
 
 
 #' Conditional Calibration Backtest
 #'
-#' The simple and general conditional calibration backtests of Nolde & Ziegel (2017).
+#' The simple and general conditional calibration backtests of
+#' [Nolde & Ziegel (2007)](https://projecteuclid.org/euclid.aoas/1514430265).
 #'
 #' @inheritParams parameter_definition
-#' @param hommel If TRUE, use Hommels correction, else use the classical Bonferroni correction.
-#' @return Returns a 2x2 matrix with p-values
+#' @param hommel If TRUE, use Hommels correction,
+#' otherwise use the classical Bonferroni correction.
+#' @return Returns a list with the following components:
+#' * pvalue_twosided_simple
+#' * pvalue_onesided_simple
+#' * pvalue_twosided_general
+#' * pvalue_onesided_general
 #' @examples
 #' data(risk_forecasts)
 #' r <- risk_forecasts$r
@@ -56,8 +71,9 @@ er_backtest <- function(r, q, e, s=NULL, B=1000) {
 #' e <- risk_forecasts$e
 #' s <- risk_forecasts$s
 #' cc_backtest(r = r, q = q, e = e, s = s, alpha = 0.025)
-#' @references\href{https://arxiv.org/abs/1608.05498}{Nolde & Ziegel (2007)}
+#' @references [Nolde & Ziegel (2007)](https://projecteuclid.org/euclid.aoas/1514430265)
 #' @export
+#' @md
 cc_backtest <- function(r, q, e, s=NULL, alpha, hommel=TRUE) {
   # Sample length
   n <- length(r)
@@ -109,10 +125,13 @@ cc_backtest <- function(r, q, e, s=NULL, alpha, hommel=TRUE) {
   }
 
   # Return results
-  out <- rbind(c(p1, p3), c(p2, p4))
-  rownames(out) <- c("Simple", "General")
-  colnames(out) <- c("Two_Sided", "One_Sided")
-  out
+  ret <- list(
+    pvalue_twosided_simple = p1,
+    pvalue_onesided_simple = p3,
+    pvalue_twosided_general = p2,
+    pvalue_onesided_general = p4
+  )
+  ret
 }
 
 
@@ -121,20 +140,22 @@ cc_backtest <- function(r, q, e, s=NULL, alpha, hommel=TRUE) {
 #' This function implements multiple expected shortfall regression (esreg)
 #' based backtests.
 #' Using the `version` argument, the following backtests are available:
-#' \enumerate{
-#'   \item Regresses the expected shortfall forecasts on
-#'   the returns and tests the ES coefficients for (0, 1).
-#'   \item Regresses the quantile and the expected shortfall forecasts on
-#'   the returns and tests the ES coefficients for (0, 1).
-#'   \item Regresses the quantile and the expected shortfall forecasts on
-#'   the returns and tests the coefficients for (0, 1, 0, 1).
-#'   \item Tests whether the expected shortfall of the forecast error r - e is zero.
-#'   \item Tests whether the expected shortfall of the forecast error 1 - r/e is zero.
-#' }
+#' 1. Regresses the expected shortfall forecasts on
+#'    the returns and tests the ES coefficients for (0, 1).
+#' 1. Regresses the quantile and the expected shortfall forecasts on
+#'    the returns and tests the ES coefficients for (0, 1).
+#' 1. Regresses the quantile and the expected shortfall forecasts on
+#'    the returns and tests the coefficients for (0, 1, 0, 1).
+#' 1. Tests whether the expected shortfall of the forecast error r - e is zero.
+#' 1. Tests whether the expected shortfall of the forecast error 1 - r/e is zero.
 #'
 #' @inheritParams parameter_definition
 #' @param version Version of the backtest to be used
-#' @return Returns a named vector with p-values.
+#' @return Returns a list with the following components:
+#' * p_value_two_sided_asymptotic
+#' * p_value_one_sided_asymptotic
+#' * p_value_two_sided_bootstrap
+#' * p_value_one_sided_bootstrap
 #' @examples
 #' data(risk_forecasts)
 #' r <- risk_forecasts$r
@@ -142,8 +163,9 @@ cc_backtest <- function(r, q, e, s=NULL, alpha, hommel=TRUE) {
 #' e <- risk_forecasts$e
 #' esr_backtest(r = r, q = q, e = e, alpha = 0.025, version = 3)
 #' @references
-#' @references \href{https://arxiv.org/abs/1801.04112}{Bayer & Dimitriadis (2018)}
+#' @references [Bayer & Dimitriadis (2018)](https://arxiv.org/abs/1801.04112)
 #' @export
+#' @md
 esr_backtest <- function(r, q, e, alpha, version, B = 0) {
   data <- data.frame(r = r, q = q, e = e)
 
@@ -233,10 +255,11 @@ esr_backtest <- function(r, q, e, alpha, version, B = 0) {
   }
 
   # Return results
-  c(
+  ret <- list(
     p_value_two_sided_asymptotic = pv0_2s,
     p_value_one_sided_asymptotic = pv0_1s,
     p_value_two_sided_bootstrap = pvb_2s,
     p_value_one_sided_bootstrap = pvb_1s
   )
+  ret
 }

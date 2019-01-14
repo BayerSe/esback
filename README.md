@@ -53,8 +53,8 @@ The following table provides details on the requirements and properties of the t
 
 [McNeil & Frey (2000)]: https://doi.org/10.1016/S0927-5398(00)00012-8
 [McNeil & Frey, 2000]: https://doi.org/10.1016/S0927-5398(00)00012-8
-[Nolde & Ziegel (2017)]: https://arxiv.org/abs/1608.05498
-[Nolde & Ziegel, 2017]: https://arxiv.org/abs/1608.05498
+[Nolde & Ziegel (2017)]: https://projecteuclid.org/euclid.aoas/1514430265
+[Nolde & Ziegel, 2017]: https://projecteuclid.org/euclid.aoas/1514430265
 [Bayer & Dimitriadis, 2018]: https://arxiv.org/abs/1801.04112
 [Bayer & Dimitriadis (2018)]: https://arxiv.org/abs/1801.04112
 

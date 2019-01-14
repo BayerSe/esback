@@ -18,7 +18,13 @@ er_backtest(r, q, e, s = NULL, B = 1000)
 \item{B}{Number of bootstrap iterations}
 }
 \value{
-Returns a 2x2 matrix with p-values
+Returns a list with the following components:
+\itemize{
+\item pvalue_twosided_simple
+\item pvalue_onesided_simple
+\item pvalue_twosided_standardized
+\item pvalue_onesided_standardized
+}
 }
 \description{
 Tests whether the mean of the exceedance residuals, respectively the
