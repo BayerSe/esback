@@ -22,10 +22,10 @@ esr_backtest(r, q, e, alpha, version, B = 0)
 \value{
 Returns a list with the following components:
 \itemize{
-\item p_value_two_sided_asymptotic
-\item p_value_one_sided_asymptotic
-\item p_value_two_sided_bootstrap
-\item p_value_one_sided_bootstrap
+\item pvalue_two_sided_asymptotic
+\item pvalue_one_sided_asymptotic
+\item pvalue_two_sided_bootstrap
+\item pvalue_one_sided_bootstrap
 }
 }
 \description{

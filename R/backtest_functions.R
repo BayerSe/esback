@@ -135,6 +135,39 @@ cc_backtest <- function(r, q, e, s=NULL, alpha, hommel=TRUE) {
 }
 
 
+#' Cumulative Violation Backtests
+#'
+#' Expected shortfall backtests based on the cummulative violation series.
+#'
+#' @inheritParams parameter_definition
+#' @param m Number of lags for the conditional test
+#' @return Returns a list with the following components:
+#' * pvalue_unconditional
+#' * pvalue_conditional
+#' @examples
+#' data(risk_forecasts)
+#' H <- risk_forecasts$H
+#' de_backtest(H = H, alpha = 0.025)
+#' @references [Du & Escanciano (2016)](https://doi.org/10.1287/mnsc.2015.2342),
+#' [Costanzino & Curran (2015)](https://doi.org/10.21314/JRMV.2015.131)
+#' @export
+#' @md
+de_backtest <- function(H, alpha, m=5) {
+  n <- length(H)
+  t_uc <- sqrt(n) * (mean(H) - alpha/2) / sqrt(alpha*(1/3 - alpha/4))
+  t_cc <- n * sum(stats::acf(H - alpha/2, lag.max=m, plot=FALSE)$acf[2:(m+1)]^2)
+  p_uc <- 2 * (1 - stats::pnorm(abs(t_uc)))
+  p_cc <- 1 - stats::pchisq(t_cc, m)
+
+  # Return results
+  ret <- list(
+    pvalue_unconditional = p_uc,
+    pvalue_conditional = p_cc
+  )
+  ret
+}
+
+
 #' Expected Shortfall Regression Backtest
 #'
 #' This function implements multiple expected shortfall regression (esreg)

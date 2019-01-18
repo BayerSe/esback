@@ -4,7 +4,7 @@
 \alias{parameter_definition}
 \title{Parameter Definitions}
 \usage{
-parameter_definition(r, q, e, s, alpha)
+parameter_definition(r, q, e, s, H, alpha)
 }
 \arguments{
 \item{r}{A vector of returnss}
@@ -14,6 +14,8 @@ parameter_definition(r, q, e, s, alpha)
 \item{e}{A vector of Value-at-Risk forecasts}
 
 \item{s}{A vector of volatility forecasts}
+
+\item{H}{A vector of forecasts of cumulative violations}
 
 \item{alpha}{Scalar probability level in (0, 1)}
 
