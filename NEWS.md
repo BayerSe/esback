@@ -2,6 +2,7 @@
 * Merge esr_backtest and esr_backtest_intercept in one function 
 * Add three additional ES backtests
 * Clean-up and refactoring
+* Add a new backtest
 
 # 0.1.1
 * Add the loss function
