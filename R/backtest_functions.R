@@ -216,7 +216,7 @@ esr_backtest <- function(r, q, e, alpha, version, B = 0) {
     pv0_1s <- NA
     pv0_2s <- 1 - stats::pchisq(t0, sum(mask))
   } else if (version %in% c(4, 5)) {
-    t0 <- s0[mask] / sqrt(cov0[mask, mask])
+    t0 <- as.numeric(s0[mask] / sqrt(cov0[mask, mask]))
     pv0_1s <- stats::pnorm(t0)
     pv0_2s <- 2 * (1 - stats::pnorm(abs(t0)))
   }
