@@ -40,7 +40,6 @@ the returns and tests the ES coefficients for (0, 1).
 \item Regresses the quantile and the expected shortfall forecasts on
 the returns and tests the coefficients for (0, 1, 0, 1).
 \item Tests whether the expected shortfall of the forecast error r - e is zero.
-\item Tests whether the expected shortfall of the forecast error 1 - r/e is zero.
 }
 }
 \examples{
