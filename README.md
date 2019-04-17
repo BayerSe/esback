@@ -42,8 +42,6 @@ These backtests are currently implemented:
 
 [McNeil & Frey (2000)]: https://doi.org/10.1016/S0927-5398(00)00012-8
 [McNeil & Frey, 2000]: https://doi.org/10.1016/S0927-5398(00)00012-8
-[Costanzino & Curran (2015)]: https://doi.org/10.21314/JRMV.2015.131
-[Costanzino & Curran, 2015]: https://doi.org/10.21314/JRMV.2015.131
 [Nolde & Ziegel (2017)]: https://projecteuclid.org/euclid.aoas/1514430265
 [Nolde & Ziegel, 2017]: https://projecteuclid.org/euclid.aoas/1514430265
 [Bayer & Dimitriadis (2018)]: https://arxiv.org/abs/1801.04112
