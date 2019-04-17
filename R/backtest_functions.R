@@ -147,7 +147,6 @@ cc_backtest <- function(r, q, e, s=NULL, alpha, hommel=TRUE) {
 #' 1. Regresses the quantile and the expected shortfall forecasts on
 #'    the returns and tests the coefficients for (0, 1, 0, 1).
 #' 1. Tests whether the expected shortfall of the forecast error r - e is zero.
-#' 1. Tests whether the expected shortfall of the forecast error 1 - r/e is zero.
 #'
 #' @inheritParams parameter_definition
 #' @param version Version of the backtest to be used
@@ -194,12 +193,8 @@ esr_backtest <- function(r, q, e, alpha, version, B = 0) {
     g_function <- c(2, 4)
     estimator <- c('iid', 'ind')
     one_sided <- TRUE
-  } else if (version == 5) {
-    model <- I(1 - r/e) ~ 1
-    h0 <- c(NA, 0)
-    g_function <- c(2, 4)
-    estimator <- c('iid', 'ind')
-    one_sided <- TRUE
+  } else {
+    stop('This is a non-supported backtest variant!')
   }
 
   # Fit the model
