@@ -11,9 +11,7 @@ for (t in (win+1):length(r)) {
   q[t] <- quantile(r_tmp, probs=alpha)
   e[t] <- mean(r_tmp[r_tmp < q[t]])
   s[t] <- sd(r_tmp)
-  x[t] <- ecdf(r_tmp)(r[t])
 }
-H <- 1/alpha * (alpha - x) * (x <= alpha)
 
-risk_forecasts <- data.frame(r = r, q = q, e = e, s = s, H = H)[-(1:win),]
+risk_forecasts <- data.frame(r = r, q = q, e = e, s = s)[-(1:win),]
 usethis::use_data(risk_forecasts, overwrite = TRUE)
