@@ -23,7 +23,6 @@ These backtests are currently implemented:
 
 * Expected Shortfall Regression Backtest ([Bayer & Dimitriadis, 2018])
 * Exceedance Residuals Backtest ([McNeil & Frey, 2000])
-* Cummulative Violation Backtests ([Du & Escanciano, 2016] and [Costanzino & Curran, 2015])
 * Conditional Calibration Backtest ([Nolde & Ziegel, 2017])
 
 ## Examples
@@ -45,8 +44,6 @@ These backtests are currently implemented:
 [McNeil & Frey, 2000]: https://doi.org/10.1016/S0927-5398(00)00012-8
 [Costanzino & Curran (2015)]: https://doi.org/10.21314/JRMV.2015.131
 [Costanzino & Curran, 2015]: https://doi.org/10.21314/JRMV.2015.131
-[Du & Escanciano (2016)]: https://doi.org/10.1287/mnsc.2015.2342
-[Du & Escanciano, 2016]: https://doi.org/10.1287/mnsc.2015.2342
 [Nolde & Ziegel (2017)]: https://projecteuclid.org/euclid.aoas/1514430265
 [Nolde & Ziegel, 2017]: https://projecteuclid.org/euclid.aoas/1514430265
 [Bayer & Dimitriadis (2018)]: https://arxiv.org/abs/1801.04112

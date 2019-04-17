@@ -5,7 +5,6 @@
 #' @section Available backtest functions:
 #' * \link[=er_backtest]{Exceedance Residuals Backtest (McNeil & Frey, 2000)}
 #' * \link[=cc_backtest]{Conditional Calibration Backtest (Nolde & Ziegel, 2017)}
-#' * \link[=de_backtest]{Cummulative Violation Backtests (Du & Escanciano, 2016)}
 #' * \link[=esr_backtest]{Expeced Shortfall Regression Backtests (Bayer & Dimitriadis, 2018)}
 #'
 #' @docType package
