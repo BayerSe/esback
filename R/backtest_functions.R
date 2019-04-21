@@ -172,25 +172,21 @@ esr_backtest <- function(r, q, e, alpha, version, B = 0) {
   if (version == 1) {
     model <- r ~ e
     h0 <- c(NA, NA, 0, 1)
-    g_function <- c(2, 1)
     estimator <- c('iid', 'scl_sp')
     one_sided <- FALSE
   } else if (version == 2) {
     model <- r ~ q | e
     h0 <- c(NA, NA, 0, 1)
-    g_function <- c(2, 1)
     estimator <- c('iid', 'scl_sp')
     one_sided <- FALSE
   } else if (version == 3) {
     model <- r ~ q | e
     h0 <- c(0, 1, 0, 1)
-    g_function <- c(2, 1)
     estimator <- c('nid', 'scl_sp')
     one_sided <- FALSE
   } else if (version == 4) {
     model <- I(r - e) ~ 1
     h0 <- c(NA, 0)
-    g_function <- c(2, 4)
     estimator <- c('iid', 'ind')
     one_sided <- TRUE
   } else {
@@ -198,10 +194,8 @@ esr_backtest <- function(r, q, e, alpha, version, B = 0) {
   }
 
   # Fit the model
-  fit0 <- esreg::esreg(model, data = data,
-                       alpha = alpha, g1 = g_function[1], g2 = g_function[2])
-  cov0 <- stats::vcov(object = fit0,
-                      sparsity = estimator[1], cond_var = estimator[2])
+  fit0 <- esreg::esreg(model, data = data, alpha = alpha, g1 = 2, g2 = 1)
+  cov0 <- esreg::vcovMS(fit0)
   s0 <- fit0$coefficients - h0
   mask <- !is.na(h0)
 
@@ -222,10 +216,9 @@ esr_backtest <- function(r, q, e, alpha, version, B = 0) {
     idx <- matrix(sample(1:n, n*B, replace=TRUE), nrow=n)
     bs_estimates <- apply(idx, 2, function(id) {
       tryCatch({
-        fitb <- esreg::esreg(model, data = data[id,], alpha = alpha,
-                             g1 = g_function[1], g2 = g_function[2], early_stopping = 0)
+        fitb <- esreg::esreg(model, data = data[id,], alpha = alpha, g1 = 2, g2 = 1, early_stopping = 0)
         sb <- fitb$coefficients - fit0$coefficients
-        covb <- stats::vcov(fitb, sparsity = estimator[1], cond_var = estimator[2])
+        covb <- esreg::vcovMS(fitb)
         list(sb = sb, covb = covb)
       }, error=function(e) NA)
     })
@@ -236,7 +229,7 @@ esr_backtest <- function(r, q, e, alpha, version, B = 0) {
       tb <- tb[!is.na(tb)]
       pvb_2s <- mean(tb >= t0)
       pvb_1s <- NA
-    } else if (version %in% c(4, 5)) {
+    } else if (version %in% c(4)) {
       tb <- sapply(bs_estimates, function(x) {
         x$sb[mask] / sqrt(x$covb[mask, mask])
       })
