@@ -150,6 +150,7 @@ cc_backtest <- function(r, q, e, s=NULL, alpha, hommel=TRUE) {
 #'
 #' @inheritParams parameter_definition
 #' @param version Version of the backtest to be used
+#' @param cov_config a list with three components: sparsity, sigma_est, and misspec, see \link[esreg]{vcovA}
 #' @return Returns a list with the following components:
 #' * pvalue_two_sided_asymptotic
 #' * pvalue_one_sided_asymptotic
@@ -165,29 +166,30 @@ cc_backtest <- function(r, q, e, s=NULL, alpha, hommel=TRUE) {
 #' @references [Bayer & Dimitriadis (2018)](https://arxiv.org/abs/1801.04112)
 #' @export
 #' @md
-esr_backtest <- function(r, q, e, alpha, version, B = 0) {
+esr_backtest <- function(r, q, e, alpha, version, B = 0,
+                         cov_config=list(sparsity='nid', sigma_est='scl_sp', misspec=FALSE)) {
   data <- data.frame(r = r, q = q, e = e)
 
   # Set the details for the selected version of the backtest
   if (version == 1) {
     model <- r ~ e
     h0 <- c(NA, NA, 0, 1)
-    estimator <- c('iid', 'scl_sp')
+    #estimator <- c('iid', 'scl_sp')
     one_sided <- FALSE
   } else if (version == 2) {
     model <- r ~ q | e
     h0 <- c(NA, NA, 0, 1)
-    estimator <- c('iid', 'scl_sp')
+    #estimator <- c('iid', 'scl_sp')
     one_sided <- FALSE
   } else if (version == 3) {
     model <- r ~ q | e
     h0 <- c(0, 1, 0, 1)
-    estimator <- c('nid', 'scl_sp')
+    #estimator <- c('nid', 'scl_sp')
     one_sided <- FALSE
   } else if (version == 4) {
     model <- I(r - e) ~ 1
     h0 <- c(NA, 0)
-    estimator <- c('iid', 'ind')
+    #estimator <- c('iid', 'ind')
     one_sided <- TRUE
   } else {
     stop('This is a non-supported backtest variant!')
@@ -195,7 +197,7 @@ esr_backtest <- function(r, q, e, alpha, version, B = 0) {
 
   # Fit the model
   fit0 <- esreg::esreg(model, data = data, alpha = alpha, g1 = 2, g2 = 1)
-  cov0 <- esreg::vcovMS(fit0)
+  cov0 <- esreg::vcovA(fit0, sparsity = cov_config$sparsity, sigma_est = cov_config$sigma_est, misspec = cov_config$misspec)
   s0 <- fit0$coefficients - h0
   mask <- !is.na(h0)
 
@@ -218,7 +220,7 @@ esr_backtest <- function(r, q, e, alpha, version, B = 0) {
       tryCatch({
         fitb <- esreg::esreg(model, data = data[id,], alpha = alpha, g1 = 2, g2 = 1, early_stopping = 0)
         sb <- fitb$coefficients - fit0$coefficients
-        covb <- esreg::vcovMS(fitb)
+        covb <- esreg::vcovA(fitb, sparsity = cov_config$sparsity, sigma_est = cov_config$sigma_est, misspec = cov_config$misspec)
         list(sb = sb, covb = covb)
       }, error=function(e) NA)
     })
