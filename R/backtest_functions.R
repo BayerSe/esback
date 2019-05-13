@@ -197,7 +197,10 @@ esr_backtest <- function(r, q, e, alpha, version, B = 0,
 
   # Fit the model
   fit0 <- esreg::esreg(model, data = data, alpha = alpha, g1 = 2, g2 = 1)
-  cov0 <- esreg::vcovA(fit0, sparsity = cov_config$sparsity, sigma_est = cov_config$sigma_est, misspec = cov_config$misspec)
+  cov0 <- esreg::vcovA(fit0,
+                       sparsity = cov_config$sparsity,
+                       sigma_est = cov_config$sigma_est,
+                       misspec = cov_config$misspec)
   s0 <- fit0$coefficients - h0
   mask <- !is.na(h0)
 
@@ -220,7 +223,10 @@ esr_backtest <- function(r, q, e, alpha, version, B = 0,
       tryCatch({
         fitb <- esreg::esreg(model, data = data[id,], alpha = alpha, g1 = 2, g2 = 1, early_stopping = 0)
         sb <- fitb$coefficients - fit0$coefficients
-        covb <- esreg::vcovA(fitb, sparsity = cov_config$sparsity, sigma_est = cov_config$sigma_est, misspec = cov_config$misspec)
+        covb <- esreg::vcovA(fitb,
+                             sparsity = cov_config$sparsity,
+                             sigma_est = cov_config$sigma_est,
+                             misspec = cov_config$misspec)
         list(sb = sb, covb = covb)
       }, error=function(e) NA)
     })
