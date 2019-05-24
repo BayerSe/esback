@@ -174,22 +174,18 @@ esr_backtest <- function(r, q, e, alpha, version, B = 0,
   if (version == 1) {
     model <- r ~ e
     h0 <- c(NA, NA, 0, 1)
-    #estimator <- c('iid', 'scl_sp')
     one_sided <- FALSE
   } else if (version == 2) {
     model <- r ~ q | e
     h0 <- c(NA, NA, 0, 1)
-    #estimator <- c('iid', 'scl_sp')
     one_sided <- FALSE
   } else if (version == 3) {
     model <- r ~ q | e
     h0 <- c(0, 1, 0, 1)
-    #estimator <- c('nid', 'scl_sp')
     one_sided <- FALSE
   } else if (version == 4) {
     model <- I(r - e) ~ 1
     h0 <- c(NA, 0)
-    #estimator <- c('iid', 'ind')
     one_sided <- TRUE
   } else {
     stop('This is a non-supported backtest variant!')
@@ -209,7 +205,7 @@ esr_backtest <- function(r, q, e, alpha, version, B = 0,
     t0 <- as.numeric(s0[mask] %*% solve(cov0[mask, mask]) %*% s0[mask])
     pv0_1s <- NA
     pv0_2s <- 1 - stats::pchisq(t0, sum(mask))
-  } else if (version %in% c(4, 5)) {
+  } else if (version %in% c(4)) {
     t0 <- as.numeric(s0[mask] / sqrt(cov0[mask, mask]))
     pv0_1s <- stats::pnorm(t0)
     pv0_2s <- 2 * (1 - stats::pnorm(abs(t0)))
