@@ -150,6 +150,7 @@ cc_backtest <- function(r, q, e, s=NULL, alpha, hommel=TRUE) {
 #'
 #' @inheritParams parameter_definition
 #' @param version Version of the backtest to be used
+#' @param cov_config a list with three components: sparsity, sigma_est, and misspec, see \link[esreg]{vcovA}
 #' @return Returns a list with the following components:
 #' * pvalue_two_sided_asymptotic
 #' * pvalue_one_sided_asymptotic
@@ -165,43 +166,37 @@ cc_backtest <- function(r, q, e, s=NULL, alpha, hommel=TRUE) {
 #' @references [Bayer & Dimitriadis (2018)](https://arxiv.org/abs/1801.04112)
 #' @export
 #' @md
-esr_backtest <- function(r, q, e, alpha, version, B = 0) {
+esr_backtest <- function(r, q, e, alpha, version, B = 0,
+                         cov_config=list(sparsity='nid', sigma_est='scl_sp', misspec=FALSE)) {
   data <- data.frame(r = r, q = q, e = e)
 
   # Set the details for the selected version of the backtest
   if (version == 1) {
     model <- r ~ e
     h0 <- c(NA, NA, 0, 1)
-    g_function <- c(2, 1)
-    estimator <- c('iid', 'scl_sp')
     one_sided <- FALSE
   } else if (version == 2) {
     model <- r ~ q | e
     h0 <- c(NA, NA, 0, 1)
-    g_function <- c(2, 1)
-    estimator <- c('iid', 'scl_sp')
     one_sided <- FALSE
   } else if (version == 3) {
     model <- r ~ q | e
     h0 <- c(0, 1, 0, 1)
-    g_function <- c(2, 1)
-    estimator <- c('nid', 'scl_sp')
     one_sided <- FALSE
   } else if (version == 4) {
     model <- I(r - e) ~ 1
     h0 <- c(NA, 0)
-    g_function <- c(2, 4)
-    estimator <- c('iid', 'ind')
     one_sided <- TRUE
   } else {
     stop('This is a non-supported backtest variant!')
   }
 
   # Fit the model
-  fit0 <- esreg::esreg(model, data = data,
-                       alpha = alpha, g1 = g_function[1], g2 = g_function[2])
-  cov0 <- stats::vcov(object = fit0,
-                      sparsity = estimator[1], cond_var = estimator[2])
+  fit0 <- esreg::esreg(model, data = data, alpha = alpha, g1 = 2, g2 = 1)
+  cov0 <- esreg::vcovA(fit0,
+                       sparsity = cov_config$sparsity,
+                       sigma_est = cov_config$sigma_est,
+                       misspec = cov_config$misspec)
   s0 <- fit0$coefficients - h0
   mask <- !is.na(h0)
 
@@ -210,7 +205,7 @@ esr_backtest <- function(r, q, e, alpha, version, B = 0) {
     t0 <- as.numeric(s0[mask] %*% solve(cov0[mask, mask]) %*% s0[mask])
     pv0_1s <- NA
     pv0_2s <- 1 - stats::pchisq(t0, sum(mask))
-  } else if (version %in% c(4, 5)) {
+  } else if (version %in% c(4)) {
     t0 <- as.numeric(s0[mask] / sqrt(cov0[mask, mask]))
     pv0_1s <- stats::pnorm(t0)
     pv0_2s <- 2 * (1 - stats::pnorm(abs(t0)))
@@ -222,10 +217,12 @@ esr_backtest <- function(r, q, e, alpha, version, B = 0) {
     idx <- matrix(sample(1:n, n*B, replace=TRUE), nrow=n)
     bs_estimates <- apply(idx, 2, function(id) {
       tryCatch({
-        fitb <- esreg::esreg(model, data = data[id,], alpha = alpha,
-                             g1 = g_function[1], g2 = g_function[2], early_stopping = 0)
+        fitb <- esreg::esreg(model, data = data[id,], alpha = alpha, g1 = 2, g2 = 1, early_stopping = 0)
         sb <- fitb$coefficients - fit0$coefficients
-        covb <- stats::vcov(fitb, sparsity = estimator[1], cond_var = estimator[2])
+        covb <- esreg::vcovA(fitb,
+                             sparsity = cov_config$sparsity,
+                             sigma_est = cov_config$sigma_est,
+                             misspec = cov_config$misspec)
         list(sb = sb, covb = covb)
       }, error=function(e) NA)
     })
@@ -236,7 +233,7 @@ esr_backtest <- function(r, q, e, alpha, version, B = 0) {
       tb <- tb[!is.na(tb)]
       pvb_2s <- mean(tb >= t0)
       pvb_1s <- NA
-    } else if (version %in% c(4, 5)) {
+    } else if (version %in% c(4)) {
       tb <- sapply(bs_estimates, function(x) {
         x$sb[mask] / sqrt(x$covb[mask, mask])
       })

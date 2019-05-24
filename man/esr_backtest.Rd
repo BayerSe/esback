@@ -4,7 +4,8 @@
 \alias{esr_backtest}
 \title{Expected Shortfall Regression Backtest}
 \usage{
-esr_backtest(r, q, e, alpha, version, B = 0)
+esr_backtest(r, q, e, alpha, version, B = 0, cov_config = list(sparsity
+  = "nid", sigma_est = "scl_sp", misspec = FALSE))
 }
 \arguments{
 \item{r}{A vector of returnss}
@@ -18,6 +19,8 @@ esr_backtest(r, q, e, alpha, version, B = 0)
 \item{version}{Version of the backtest to be used}
 
 \item{B}{Number of bootstrap samples. Set to 0 to disable bootstrapping.}
+
+\item{cov_config}{a list with three components: sparsity, sigma_est, and misspec, see \link[esreg]{vcovA}}
 }
 \value{
 Returns a list with the following components:
