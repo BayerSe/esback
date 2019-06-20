@@ -226,6 +226,8 @@ esr_backtest <- function(r, q, e, alpha, version, B = 0,
         list(sb = sb, covb = covb)
       }, error=function(e) NA)
     })
+    bs_estimates <- bs_estimates[!is.na(bs_estimates)]
+
     if (version %in% c(1, 2, 3)) {
       tb <- sapply(bs_estimates, function(x) {
         as.numeric(x$sb[mask] %*% solve(x$covb[mask, mask]) %*% x$sb[mask])
