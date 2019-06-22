@@ -226,7 +226,11 @@ esr_backtest <- function(r, q, e, alpha, version, B = 0,
         list(sb = sb, covb = covb)
       }, error=function(e) NA)
     })
-    bs_estimates <- bs_estimates[!is.na(bs_estimates)]
+    idx_na <- is.na(bs_estimates)
+    share_na <- mean(idx_na)
+    if (share_na >= 0.05) stop('More than 5% of the bootstrap replications failed!')
+
+    bs_estimates <- bs_estimates[!idx_na]
 
     if (version %in% c(1, 2, 3)) {
       tb <- sapply(bs_estimates, function(x) {
