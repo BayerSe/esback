@@ -26,9 +26,9 @@ esr_backtest(r, q, e, alpha, version, B = 0, cov_config = list(sparsity
 Returns a list with the following components:
 \itemize{
 \item pvalue_two_sided_asymptotic
-\item pvalue_one_sided_asymptotic (for version 3 if B > 0)
-\item pvalue_two_sided_bootstrap (if B > 0)
-\item pvalue_one_sided_bootstrap (for version 3 if B > 0)
+\item pvalue_one_sided_asymptotic (for version 3)
+\item pvalue_two_sided_bootstrap
+\item pvalue_one_sided_bootstrap (for version 3)
 }
 }
 \description{

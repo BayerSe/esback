@@ -151,9 +151,9 @@ cc_backtest <- function(r, q, e, s=NULL, alpha, hommel=TRUE) {
 #' @param cov_config a list with three components: sparsity, sigma_est, and misspec, see \link[esreg]{vcovA}
 #' @return Returns a list with the following components:
 #' * pvalue_two_sided_asymptotic
-#' * pvalue_one_sided_asymptotic (for version 3 if B > 0)
-#' * pvalue_two_sided_bootstrap (if B > 0)
-#' * pvalue_one_sided_bootstrap (for version 3 if B > 0)
+#' * pvalue_one_sided_asymptotic (for version 3)
+#' * pvalue_two_sided_bootstrap
+#' * pvalue_one_sided_bootstrap (for version 3)
 #' @examples
 #' data(risk_forecasts)
 #' r <- risk_forecasts$r
@@ -249,9 +249,13 @@ esr_backtest <- function(r, q, e, alpha, version, B = 0,
   # Return results
   ret <- list(
     pvalue_twosided_asymptotic = pv0_2s,
-    pvalue_onesided_asymptotic = pv0_1s,
-    pvalue_twosided_bootstrap = pvb_2s,
-    pvalue_onesided_bootstrap = pvb_1s
+    pvalue_twosided_bootstrap = pvb_2s
   )
+
+  if (version %in% c(3)) {
+    ret['pvalue_onesided_asymptotic'] <- pv0_1s
+    ret['pvalue_onesided_bootstrap'] <- pvb_1s
+  }
+
   ret
 }
