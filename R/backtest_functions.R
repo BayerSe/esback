@@ -144,8 +144,6 @@ cc_backtest <- function(r, q, e, s=NULL, alpha, hommel=TRUE) {
 #'    the returns and tests the ES coefficients for (0, 1).
 #' 1. Regresses the quantile and the expected shortfall forecasts on
 #'    the returns and tests the ES coefficients for (0, 1).
-#' 1. Regresses the quantile and the expected shortfall forecasts on
-#'    the returns and tests the coefficients for (0, 1, 0, 1).
 #' 1. Tests whether the expected shortfall of the forecast error r - e is zero.
 #'
 #' @inheritParams parameter_definition
@@ -153,9 +151,9 @@ cc_backtest <- function(r, q, e, s=NULL, alpha, hommel=TRUE) {
 #' @param cov_config a list with three components: sparsity, sigma_est, and misspec, see \link[esreg]{vcovA}
 #' @return Returns a list with the following components:
 #' * pvalue_two_sided_asymptotic
-#' * pvalue_one_sided_asymptotic
-#' * pvalue_two_sided_bootstrap
-#' * pvalue_one_sided_bootstrap
+#' * pvalue_one_sided_asymptotic (for version 3 if B > 0)
+#' * pvalue_two_sided_bootstrap (if B > 0)
+#' * pvalue_one_sided_bootstrap (for version 3 if B > 0)
 #' @examples
 #' data(risk_forecasts)
 #' r <- risk_forecasts$r
@@ -180,15 +178,11 @@ esr_backtest <- function(r, q, e, alpha, version, B = 0,
     h0 <- c(NA, NA, 0, 1)
     one_sided <- FALSE
   } else if (version == 3) {
-    model <- r ~ q | e
-    h0 <- c(0, 1, 0, 1)
-    one_sided <- FALSE
-  } else if (version == 4) {
     model <- I(r - e) ~ 1
     h0 <- c(NA, 0)
     one_sided <- TRUE
   } else {
-    stop('This is a non-supported backtest variant!')
+    stop('This is a non-supported backtest version!')
   }
 
   # Fit the model
@@ -201,11 +195,11 @@ esr_backtest <- function(r, q, e, alpha, version, B = 0,
   mask <- !is.na(h0)
 
   # Compute the asymptotic test statistic and p-value
-  if (version %in% c(1, 2, 3)) {
+  if (version %in% c(1, 2)) {
     t0 <- as.numeric(s0[mask] %*% solve(cov0[mask, mask]) %*% s0[mask])
     pv0_1s <- NA
     pv0_2s <- 1 - stats::pchisq(t0, sum(mask))
-  } else if (version %in% c(4)) {
+  } else if (version %in% c(3)) {
     t0 <- as.numeric(s0[mask] / sqrt(cov0[mask, mask]))
     pv0_1s <- stats::pnorm(t0)
     pv0_2s <- 2 * (1 - stats::pnorm(abs(t0)))

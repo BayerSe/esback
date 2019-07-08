@@ -26,9 +26,9 @@ esr_backtest(r, q, e, alpha, version, B = 0, cov_config = list(sparsity
 Returns a list with the following components:
 \itemize{
 \item pvalue_two_sided_asymptotic
-\item pvalue_one_sided_asymptotic
-\item pvalue_two_sided_bootstrap
-\item pvalue_one_sided_bootstrap
+\item pvalue_one_sided_asymptotic (for version 3 if B > 0)
+\item pvalue_two_sided_bootstrap (if B > 0)
+\item pvalue_one_sided_bootstrap (for version 3 if B > 0)
 }
 }
 \description{
@@ -40,8 +40,6 @@ Using the \code{version} argument, the following backtests are available:
 the returns and tests the ES coefficients for (0, 1).
 \item Regresses the quantile and the expected shortfall forecasts on
 the returns and tests the ES coefficients for (0, 1).
-\item Regresses the quantile and the expected shortfall forecasts on
-the returns and tests the coefficients for (0, 1, 0, 1).
 \item Tests whether the expected shortfall of the forecast error r - e is zero.
 }
 }
