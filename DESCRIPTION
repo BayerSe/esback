@@ -5,7 +5,7 @@ Version: 0.2.0
 Date: 2019-09-10
 Authors@R: c(person('Sebastian', 'Bayer', email='sebastian.bayer@uni-konstanz.de', role=c('aut', 'cre')), 
              person('Timo', 'Dimitriadis', email='timo.dimitriadis@uni-konstanz.de', role='aut'))
-Description: Backtests forecasts of the expected shortfall risk measure.
+Description: Backtests forecasts of the expected shortfall risk measure, see Bayer and Dimitriadis (2018) <arXiv:1801.04112>.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true

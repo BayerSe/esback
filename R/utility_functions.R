@@ -2,7 +2,7 @@
 #'
 #' Defines commonly used parameters.
 #'
-#' @param r A vector of returnss
+#' @param r A vector of returns
 #' @param q A vector of expected shortfall forecasts
 #' @param e A vector of Value-at-Risk forecasts
 #' @param s A vector of volatility forecasts

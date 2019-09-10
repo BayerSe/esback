@@ -3,7 +3,7 @@
 #' A dataset containing the daily log returns and risk forecasts for the S&P 500 index.
 #' The quantile and expected shortfall forecasts are for the probability level 2.5\%.
 #'
-#' Descrption of the variables:
+#' Description of the variables:
 #' \describe{
 #'   \item{r}{Daily log returns from January 3, 2000 to September 29, 2017 (4465 days)}
 #'   \item{q}{Value-at-Risk forecasts of the Historical Simulation approach}
