@@ -140,11 +140,11 @@ cc_backtest <- function(r, q, e, s=NULL, alpha, hommel=TRUE) {
 #' This function implements multiple expected shortfall regression (esreg)
 #' based backtests.
 #' Using the `version` argument, the following backtests are available:
-#' 1. Regresses the expected shortfall forecasts on
-#'    the returns and tests the ES coefficients for (0, 1).
-#' 1. Regresses the quantile and the expected shortfall forecasts on
-#'    the returns and tests the ES coefficients for (0, 1).
-#' 1. Tests whether the expected shortfall of the forecast error r - e is zero.
+#' 1. ("Strict ESR") Regresses the returns on the expected shortfall forecasts
+#'     and tests the ES coefficients for (0, 1).
+#' 1. ("Auxiliary ESR") Regresses the returns ont quantile and the expected shortfall forecasts
+#'    and tests the ES coefficients for (0, 1).
+#' 1. ("Strict Intercept") Tests whether the expected shortfall of the forecast error r - e is zero.
 #'
 #' @inheritParams parameter_definition
 #' @param version Version of the backtest to be used

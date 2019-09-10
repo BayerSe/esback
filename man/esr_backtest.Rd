@@ -5,7 +5,7 @@
 \title{Expected Shortfall Regression Backtest}
 \usage{
 esr_backtest(r, q, e, alpha, version, B = 0, cov_config = list(sparsity
-  = "nid", sigma_est = "scl_sp", misspec = FALSE))
+  = "nid", sigma_est = "scl_sp", misspec = TRUE))
 }
 \arguments{
 \item{r}{A vector of returnss}
@@ -36,11 +36,11 @@ This function implements multiple expected shortfall regression (esreg)
 based backtests.
 Using the \code{version} argument, the following backtests are available:
 \enumerate{
-\item Regresses the expected shortfall forecasts on
-the returns and tests the ES coefficients for (0, 1).
-\item Regresses the quantile and the expected shortfall forecasts on
-the returns and tests the ES coefficients for (0, 1).
-\item Tests whether the expected shortfall of the forecast error r - e is zero.
+\item ("Strict ESR") Regresses the returns on the expected shortfall forecasts
+and tests the ES coefficients for (0, 1).
+\item ("Auxiliary ESR") Regresses the returns ont quantile and the expected shortfall forecasts
+and tests the ES coefficients for (0, 1).
+\item ("Strict Intercept") Tests whether the expected shortfall of the forecast error r - e is zero.
 }
 }
 \examples{

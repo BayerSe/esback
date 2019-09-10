@@ -1,5 +1,6 @@
 # 0.2.0
-* Merge esr_backtest and esr_backtest_intercept in one function 
+* Merge esr_backtest and esr_backtest_intercept in one function and add an additional esr backtest version
+* Account for misspecification in the covariance estimation
 * Add additional ES backtests
 * Clean-up and refactoring
 
