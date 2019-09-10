@@ -159,7 +159,7 @@ cc_backtest <- function(r, q, e, s=NULL, alpha, hommel=TRUE) {
 #' r <- risk_forecasts$r
 #' q <- risk_forecasts$q
 #' e <- risk_forecasts$e
-#' esr_backtest(r = r, q = q, e = e, alpha = 0.025, version = 3)
+#' esr_backtest(r = r, q = q, e = e, alpha = 0.025, version = 1)
 #' @references
 #' @references [Bayer & Dimitriadis (2018)](https://arxiv.org/abs/1801.04112)
 #' @export

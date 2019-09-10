@@ -7,7 +7,7 @@
 er_backtest(r, q, e, s = NULL, B = 1000)
 }
 \arguments{
-\item{r}{A vector of returnss}
+\item{r}{A vector of returns}
 
 \item{q}{A vector of expected shortfall forecasts}
 

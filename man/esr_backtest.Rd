@@ -8,7 +8,7 @@ esr_backtest(r, q, e, alpha, version, B = 0, cov_config = list(sparsity
   = "nid", sigma_est = "scl_sp", misspec = TRUE))
 }
 \arguments{
-\item{r}{A vector of returnss}
+\item{r}{A vector of returns}
 
 \item{q}{A vector of expected shortfall forecasts}
 
@@ -38,7 +38,7 @@ Using the \code{version} argument, the following backtests are available:
 \enumerate{
 \item ("Strict ESR") Regresses the returns on the expected shortfall forecasts
 and tests the ES coefficients for (0, 1).
-\item ("Auxiliary ESR") Regresses the returns ont quantile and the expected shortfall forecasts
+\item ("Auxiliary ESR") Regresses the returns on the quantile and the expected shortfall forecasts
 and tests the ES coefficients for (0, 1).
 \item ("Strict Intercept") Tests whether the expected shortfall of the forecast error r - e is zero.
 }
@@ -48,7 +48,7 @@ data(risk_forecasts)
 r <- risk_forecasts$r
 q <- risk_forecasts$q
 e <- risk_forecasts$e
-esr_backtest(r = r, q = q, e = e, alpha = 0.025, version = 3)
+esr_backtest(r = r, q = q, e = e, alpha = 0.025, version = 1)
 }
 \references{
 \href{https://arxiv.org/abs/1801.04112}{Bayer & Dimitriadis (2018)}
