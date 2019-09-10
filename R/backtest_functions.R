@@ -165,7 +165,7 @@ cc_backtest <- function(r, q, e, s=NULL, alpha, hommel=TRUE) {
 #' @export
 #' @md
 esr_backtest <- function(r, q, e, alpha, version, B = 0,
-                         cov_config=list(sparsity='nid', sigma_est='scl_sp', misspec=FALSE)) {
+                         cov_config=list(sparsity='nid', sigma_est='scl_sp', misspec=TRUE)) {
   data <- data.frame(r = r, q = q, e = e)
 
   # Set the details for the selected version of the backtest
