@@ -7,7 +7,7 @@
 cc_backtest(r, q, e, s = NULL, alpha, hommel = TRUE)
 }
 \arguments{
-\item{r}{A vector of returnss}
+\item{r}{A vector of returns}
 
 \item{q}{A vector of expected shortfall forecasts}
 
@@ -17,13 +17,21 @@ cc_backtest(r, q, e, s = NULL, alpha, hommel = TRUE)
 
 \item{alpha}{Scalar probability level in (0, 1)}
 
-\item{hommel}{If TRUE, use Hommels correction, else use the classical Bonferroni correction.}
+\item{hommel}{If TRUE, use Hommels correction,
+otherwise use the classical Bonferroni correction.}
 }
 \value{
-Returns a 2x2 matrix with p-values
+Returns a list with the following components:
+\itemize{
+\item pvalue_twosided_simple
+\item pvalue_onesided_simple
+\item pvalue_twosided_general
+\item pvalue_onesided_general
+}
 }
 \description{
-The simple and general conditional calibration backtests of Nolde & Ziegel (2017).
+The simple and general conditional calibration backtests of
+\href{https://projecteuclid.org/euclid.aoas/1514430265}{Nolde & Ziegel (2007)}.
 }
 \examples{
 data(risk_forecasts)
@@ -34,5 +42,5 @@ s <- risk_forecasts$s
 cc_backtest(r = r, q = q, e = e, s = s, alpha = 0.025)
 }
 \references{
-\href{https://arxiv.org/abs/1608.05498}{Nolde & Ziegel (2007)}
+\href{https://projecteuclid.org/euclid.aoas/1514430265}{Nolde & Ziegel (2007)}
 }

@@ -7,7 +7,7 @@
 parameter_definition(r, q, e, s, alpha)
 }
 \arguments{
-\item{r}{A vector of returnss}
+\item{r}{A vector of returns}
 
 \item{q}{A vector of expected shortfall forecasts}
 

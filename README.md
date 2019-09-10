@@ -7,7 +7,9 @@ The esback package contains function that can be used to backtest
 
 ### CRAN (stable release)
 
-esback is not on [CRAN](https://cran.r-project.org/) yet.
+You can install the released version from [CRAN](https://cran.r-project.org/):
+
+    install.packages("esback")
 
 ### GitHub (development)
 
@@ -25,17 +27,6 @@ These backtests are currently implemented:
 * Exceedance Residuals Backtest ([McNeil & Frey, 2000])
 * Conditional Calibration Backtest ([Nolde & Ziegel, 2017])
 
-The following table provides details on the requirements and properties of the tests.
-
-| Backtest        | Source                       | Requires VaR | Requires Volatility | One Sided Alternative |
-|-----------------|------------------------------|--------------|---------------------|-----------------------|
-| Intercept ESR   | [Bayer & Dimitriadis (2018)] |              |                     | x                     |
-| Bivariate ESR   | [Bayer & Dimitriadis (2018)] |              |                     |                       |
-| ER              | [McNeil & Frey (2000)]       | x            |                     | x                     |
-| Standardized ER | [McNeil & Frey (2000)]       | x            | x                   | x                     |
-| Simple CC       | [Nolde & Ziegel (2017)]      | x            |                     | x                     |
-| General CC      | [Nolde & Ziegel (2017)]      | x            | x                   | x                     |
-
 ## Examples
 
     # Load the esback package
@@ -49,12 +40,11 @@ The following table provides details on the requirements and properties of the t
     lines(risk_forecasts$e, col = "red", lwd = 2)
   
     # Backtest the forecast using the ESR test
-    esr_backtest(r = risk_forecasts$r, e = risk_forecasts$e, alpha = 0.025)
+    esr_backtest(r = risk_forecasts$r, e = risk_forecasts$e, alpha = 0.025, version = 1)
 
 [McNeil & Frey (2000)]: https://doi.org/10.1016/S0927-5398(00)00012-8
 [McNeil & Frey, 2000]: https://doi.org/10.1016/S0927-5398(00)00012-8
-[Nolde & Ziegel (2017)]: https://arxiv.org/abs/1608.05498
-[Nolde & Ziegel, 2017]: https://arxiv.org/abs/1608.05498
-[Bayer & Dimitriadis, 2018]: https://arxiv.org/abs/1801.04112
+[Nolde & Ziegel (2017)]: https://projecteuclid.org/euclid.aoas/1514430265
+[Nolde & Ziegel, 2017]: https://projecteuclid.org/euclid.aoas/1514430265
 [Bayer & Dimitriadis (2018)]: https://arxiv.org/abs/1801.04112
-
+[Bayer & Dimitriadis, 2018]: https://arxiv.org/abs/1801.04112
