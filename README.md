@@ -7,9 +7,7 @@ The esback package contains function that can be used to backtest
 
 ### CRAN (stable release)
 
-You can install the released version from [CRAN](https://cran.r-project.org/):
-
-    install.packages("esback")
+`esback` is not on [CRAN](https://cran.r-project.org/) yet.
 
 ### GitHub (development)
 
