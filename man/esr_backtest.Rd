@@ -4,8 +4,15 @@
 \alias{esr_backtest}
 \title{Expected Shortfall Regression Backtest}
 \usage{
-esr_backtest(r, q, e, alpha, version, B = 0, cov_config = list(sparsity
-  = "nid", sigma_est = "scl_sp", misspec = TRUE))
+esr_backtest(
+  r,
+  q,
+  e,
+  alpha,
+  version,
+  B = 0,
+  cov_config = list(sparsity = "nid", sigma_est = "scl_sp", misspec = TRUE)
+)
 }
 \arguments{
 \item{r}{A vector of returns}
@@ -51,5 +58,7 @@ e <- risk_forecasts$e
 esr_backtest(r = r, q = q, e = e, alpha = 0.025, version = 1)
 }
 \references{
-\href{https://arxiv.org/abs/1801.04112}{Bayer & Dimitriadis (2018)}
+
+
+\href{https://arxiv.org/abs/1801.04112}{Bayer & Dimitriadis (2019)}
 }
