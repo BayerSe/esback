@@ -7,15 +7,15 @@
 parameter_definition(r, q, e, s, alpha)
 }
 \arguments{
-\item{r}{A vector of returns}
+\item{r}{A vector of returns.}
 
-\item{q}{A vector of expected shortfall forecasts}
+\item{q}{A vector of Value-at-Risk forecasts.}
 
-\item{e}{A vector of Value-at-Risk forecasts}
+\item{e}{A vector of Expected Shortfall forecasts.}
 
-\item{s}{A vector of volatility forecasts}
+\item{s}{A vector of volatility forecasts.}
 
-\item{alpha}{Scalar probability level in (0, 1)}
+\item{alpha}{Scalar probability level in (0, 1).}
 
 \item{B}{Number of bootstrap samples. Set to 0 to disable bootstrapping.}
 }

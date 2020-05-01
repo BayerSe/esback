@@ -1,3 +1,7 @@
+# 0.2.2 [2020-05-01]
+* Fix typo in parameter documentation.
+* Don't require parameter "q" in esr_backtest when backtest version is 1 or 3.
+
 # 0.2.1
 * Adjust estimation of the intercept ESR backtest
 

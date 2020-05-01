@@ -15,13 +15,13 @@ esr_backtest(
 )
 }
 \arguments{
-\item{r}{A vector of returns}
+\item{r}{A vector of returns.}
 
-\item{q}{A vector of expected shortfall forecasts}
+\item{q}{A vector of Value-at-Risk forecasts.}
 
-\item{e}{A vector of Value-at-Risk forecasts}
+\item{e}{A vector of Expected Shortfall forecasts.}
 
-\item{alpha}{Scalar probability level in (0, 1)}
+\item{alpha}{Scalar probability level in (0, 1).}
 
 \item{version}{Version of the backtest to be used}
 

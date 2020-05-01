@@ -4,7 +4,9 @@
 \name{risk_forecasts}
 \alias{risk_forecasts}
 \title{Returns and risk forecasts for the S&P 500 index}
-\format{A data.frame with 4396 rows and 4 variables}
+\format{
+A data.frame with 4396 rows and 4 variables
+}
 \usage{
 data(risk_forecasts)
 }

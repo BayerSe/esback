@@ -166,7 +166,15 @@ cc_backtest <- function(r, q, e, s=NULL, alpha, hommel=TRUE) {
 #' @md
 esr_backtest <- function(r, q, e, alpha, version, B = 0,
                          cov_config=list(sparsity='nid', sigma_est='scl_sp', misspec=TRUE)) {
-  data <- data.frame(r = r, q = q, e = e)
+  if (missing(q) & version %in% c(2)) {
+    stop('You need to supply VaR forecast `q` for backtest version ', version)
+  }
+
+  if (missing(q)) {
+    data <- data.frame(r = r, e = e)
+  } else {
+    data <- data.frame(r = r, q = q, e = e)
+  }
 
   # Set the details for the selected version of the backtest
   if (version == 1) {

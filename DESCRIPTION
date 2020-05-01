@@ -1,8 +1,8 @@
 Package: esback
 Type: Package
 Title: Expected Shortfall Backtesting
-Version: 0.2.1
-Date: 2020-01-20
+Version: 0.2.2
+Date: 2020-05-01
 Authors@R: c(person('Sebastian', 'Bayer', email='sebastian.bayer@uni-konstanz.de', role=c('aut', 'cre')), 
              person('Timo', 'Dimitriadis', email='timo.dimitriadis@uni-konstanz.de', role='aut'))
 Description: Backtests forecasts of the expected shortfall risk measure, see Bayer and Dimitriadis (2019) <arXiv:1801.04112>.
@@ -11,4 +11,4 @@ Encoding: UTF-8
 LazyData: true
 Depends: R(>= 2.10.0)
 Imports: esreg
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.0

@@ -7,13 +7,13 @@
 er_backtest(r, q, e, s = NULL, B = 1000)
 }
 \arguments{
-\item{r}{A vector of returns}
+\item{r}{A vector of returns.}
 
-\item{q}{A vector of expected shortfall forecasts}
+\item{q}{A vector of Value-at-Risk forecasts.}
 
-\item{e}{A vector of Value-at-Risk forecasts}
+\item{e}{A vector of Expected Shortfall forecasts.}
 
-\item{s}{A vector of volatility forecasts}
+\item{s}{A vector of volatility forecasts.}
 
 \item{B}{Number of bootstrap iterations}
 }

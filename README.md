@@ -1,7 +1,7 @@
 # esback
 
-The esback can be used to [backtest](https://en.wikipedia.org/wiki/Backtesting)
-[expected shortfall](https://en.wikipedia.org/wiki/Expected_shortfall) forecasts.
+The esback can be used to [backtest](https://en.wikipedia.org/wiki/Backtesting) forecasts of the
+[expected shortfall](https://en.wikipedia.org/wiki/Expected_shortfall) risk measure.
 
 ## Installation
 
@@ -19,7 +19,7 @@ You can install the development version using these commands:
     
 ## Implemented Backtests
 
-These backtests are implemented:
+This packahed implements the following backtests:
 
 * Expected Shortfall Regression Backtest ([Bayer & Dimitriadis, 2019])
 * Exceedance Residuals Backtest ([McNeil & Frey, 2000])
