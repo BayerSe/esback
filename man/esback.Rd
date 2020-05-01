@@ -3,7 +3,6 @@
 \docType{package}
 \name{esback}
 \alias{esback}
-\alias{esback-package}
 \title{esback: A package for backtesting expected shortfall forecasts}
 \description{
 The esback package contains functions for backtesting expected shortfall forecasts.

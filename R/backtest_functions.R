@@ -161,7 +161,7 @@ cc_backtest <- function(r, q, e, s=NULL, alpha, hommel=TRUE) {
 #' e <- risk_forecasts$e
 #' esr_backtest(r = r, q = q, e = e, alpha = 0.025, version = 1)
 #' @references
-#' @references [Bayer & Dimitriadis (2018)](https://arxiv.org/abs/1801.04112)
+#' @references [Bayer & Dimitriadis (2019)](https://arxiv.org/abs/1801.04112)
 #' @export
 #' @md
 esr_backtest <- function(r, q, e, alpha, version, B = 0,
@@ -178,8 +178,8 @@ esr_backtest <- function(r, q, e, alpha, version, B = 0,
     h0 <- c(NA, NA, 0, 1)
     one_sided <- FALSE
   } else if (version == 3) {
-    model <- I(r - e) ~ 1
-    h0 <- c(NA, 0)
+    model <- I(r - e) ~ e | 1
+    h0 <- c(NA, NA, 0)
     one_sided <- TRUE
   } else {
     stop('This is a non-supported backtest version!')
@@ -226,14 +226,14 @@ esr_backtest <- function(r, q, e, alpha, version, B = 0,
 
     bs_estimates <- bs_estimates[!idx_na]
 
-    if (version %in% c(1, 2, 3)) {
+    if (version %in% c(1, 2)) {
       tb <- sapply(bs_estimates, function(x) {
         as.numeric(x$sb[mask] %*% solve(x$covb[mask, mask]) %*% x$sb[mask])
       })
       tb <- tb[!is.na(tb)]
       pvb_2s <- mean(tb >= t0)
       pvb_1s <- NA
-    } else if (version %in% c(4)) {
+    } else if (version %in% c(3)) {
       tb <- sapply(bs_estimates, function(x) {
         x$sb[mask] / sqrt(x$covb[mask, mask])
       })

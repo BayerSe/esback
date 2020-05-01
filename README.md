@@ -1,6 +1,6 @@
 # esback
 
-The esback package contains function that can be used to backtest
+The esback can be used to [backtest](https://en.wikipedia.org/wiki/Backtesting)
 [expected shortfall](https://en.wikipedia.org/wiki/Expected_shortfall) forecasts.
 
 ## Installation
@@ -15,13 +15,13 @@ The latest version of the package is under development at [GitHub](https://githu
 You can install the development version using these commands:
 
     install.packages("devtools")
-    devtools::install_github("BayerSe/esback")
+    devtools::install_github("BayerSe/esback", ref = "master")
     
 ## Implemented Backtests
 
-These backtests are currently implemented:
+These backtests are implemented:
 
-* Expected Shortfall Regression Backtest ([Bayer & Dimitriadis, 2018])
+* Expected Shortfall Regression Backtest ([Bayer & Dimitriadis, 2019])
 * Exceedance Residuals Backtest ([McNeil & Frey, 2000])
 * Conditional Calibration Backtest ([Nolde & Ziegel, 2017])
 
@@ -44,5 +44,5 @@ These backtests are currently implemented:
 [McNeil & Frey, 2000]: https://doi.org/10.1016/S0927-5398(00)00012-8
 [Nolde & Ziegel (2017)]: https://projecteuclid.org/euclid.aoas/1514430265
 [Nolde & Ziegel, 2017]: https://projecteuclid.org/euclid.aoas/1514430265
-[Bayer & Dimitriadis (2018)]: https://arxiv.org/abs/1801.04112
-[Bayer & Dimitriadis, 2018]: https://arxiv.org/abs/1801.04112
+[Bayer & Dimitriadis (2019)]: https://arxiv.org/abs/1801.04112
+[Bayer & Dimitriadis, 2019]: https://arxiv.org/abs/1801.04112
