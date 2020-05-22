@@ -1,11 +1,11 @@
 Package: esback
 Type: Package
 Title: Expected Shortfall Backtesting
-Version: 0.2.2
-Date: 2020-05-01
+Version: 0.3.0
+Date: 2020-05-22
 Authors@R: c(person('Sebastian', 'Bayer', email='sebastian.bayer@uni-konstanz.de', role=c('aut', 'cre')), 
-             person('Timo', 'Dimitriadis', email='timo.dimitriadis@uni-konstanz.de', role='aut'))
-Description: Backtests forecasts of the expected shortfall risk measure, see Bayer and Dimitriadis (2019) <arXiv:1801.04112>.
+             person('Timo', 'Dimitriadis', email='timo.dimitriadis@h-its.org', role='aut'))
+Description: Backtests forecasts of the expected shortfall risk measure, see Bayer and Dimitriadis (2020) <doi:10.1093/jjfinec/nbaa013>.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true

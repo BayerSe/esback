@@ -7,7 +7,11 @@ The esback can be used to [backtest](https://en.wikipedia.org/wiki/Backtesting) 
 
 ### CRAN (stable release)
 
-`esback` is not on [CRAN](https://cran.r-project.org/) yet.
+You can install the released version from
+[CRAN](https://cran.r-project.org/) via:
+
+    install.packages("esback")
+
 
 ### GitHub (development)
 
@@ -19,7 +23,7 @@ You can install the development version using these commands:
     
 ## Implemented Backtests
 
-This packahed implements the following backtests:
+This package implements the following backtests:
 
 * Expected Shortfall Regression Backtest ([Bayer & Dimitriadis, 2019])
 * Exceedance Residuals Backtest ([McNeil & Frey, 2000])
@@ -40,9 +44,10 @@ This packahed implements the following backtests:
     # Backtest the forecast using the ESR test
     esr_backtest(r = risk_forecasts$r, e = risk_forecasts$e, alpha = 0.025, version = 1)
 
+
 [McNeil & Frey (2000)]: https://doi.org/10.1016/S0927-5398(00)00012-8
 [McNeil & Frey, 2000]: https://doi.org/10.1016/S0927-5398(00)00012-8
 [Nolde & Ziegel (2017)]: https://projecteuclid.org/euclid.aoas/1514430265
 [Nolde & Ziegel, 2017]: https://projecteuclid.org/euclid.aoas/1514430265
-[Bayer & Dimitriadis (2019)]: https://arxiv.org/abs/1801.04112
-[Bayer & Dimitriadis, 2019]: https://arxiv.org/abs/1801.04112
+[Bayer & Dimitriadis (2020)]: https://doi.org/10.1093/jjfinec/nbaa013
+[Bayer & Dimitriadis, 2020]: https://doi.org/10.1093/jjfinec/nbaa013

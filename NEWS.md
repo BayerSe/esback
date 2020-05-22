@@ -1,3 +1,7 @@
+# 0.3.0 [2020-05-22]
+* Update references.
+* Bump for CRAN submission.
+
 # 0.2.2 [2020-05-01]
 * Fix typo in parameter documentation.
 * Don't require parameter "q" in esr_backtest when backtest version is 1 or 3.
