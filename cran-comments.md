@@ -1,3 +1,8 @@
+## Resubmission
+This is a resubmission. In this version I have:
+
+* Extended the description in the DESCRIPTION file per request of Jelena Saf.
+  
 ## Test environments
 * local Arch install, R 4.0.0
 * R-hub
