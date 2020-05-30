@@ -12,7 +12,7 @@ Description: This package implements the expected shortfall backtests developed
     and finance industry. A special feature of the backtests of 
     Bayer and Dimitriadis (2020) <doi:10.1093/jjfinec/nbaa013> is that they only require 
     forecasts of the expected shortfall, which is in striking contrast to all other existing 
-    backteststs, making them particularly attractive for practitioners.
+    backtests, making them particularly attractive for practitioners.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
