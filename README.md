@@ -25,7 +25,7 @@ You can install the development version using these commands:
 
 This package implements the following backtests:
 
-* Expected Shortfall Regression Backtest ([Bayer & Dimitriadis, 2019])
+* Expected Shortfall Regression Backtest ([Bayer & Dimitriadis, 2020])
 * Exceedance Residuals Backtest ([McNeil & Frey, 2000])
 * Conditional Calibration Backtest ([Nolde & Ziegel, 2017])
 
