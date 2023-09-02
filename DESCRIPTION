@@ -1,8 +1,8 @@
 Package: esback
 Type: Package
 Title: Expected Shortfall Backtesting
-Version: 0.3.0
-Date: 2020-05-22
+Version: 0.3.1
+Date: 2023-09-02
 Authors@R: c(person('Sebastian', 'Bayer', email='sebastian.bayer@uni-konstanz.de', role=c('aut', 'cre')), 
              person('Timo', 'Dimitriadis', email='timo.dimitriadis@h-its.org', role='aut'))
 Description: Implementations of the expected shortfall backtests of Bayer and Dimitriadis (2020) <doi:10.1093/jjfinec/nbaa013> 

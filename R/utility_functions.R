@@ -9,4 +9,4 @@
 #' @param alpha Scalar probability level in (0, 1).
 #' @param B Number of bootstrap samples. Set to 0 to disable bootstrapping.
 #' @keywords internal
-parameter_definition <- function(r, q, e, s, alpha) {}
+parameter_definition <- function(r, q, e, s, alpha, B) {}

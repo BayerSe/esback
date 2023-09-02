@@ -1,3 +1,6 @@
+# 0.3.1 [2023-09-02]
+* Fix documentation issue
+
 # 0.3.0 [2020-05-22]
 * Update references.
 * Bump for CRAN submission.
