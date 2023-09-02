@@ -4,7 +4,7 @@
 \alias{parameter_definition}
 \title{Parameter Definitions}
 \usage{
-parameter_definition(r, q, e, s, alpha)
+parameter_definition(r, q, e, s, alpha, B)
 }
 \arguments{
 \item{r}{A vector of returns.}
