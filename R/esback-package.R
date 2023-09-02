@@ -10,4 +10,4 @@
 #' @docType package
 #' @name esback
 #' @md
-NULL
+"_PACKAGE"

@@ -58,7 +58,5 @@ e <- risk_forecasts$e
 esr_backtest(r = r, q = q, e = e, alpha = 0.025, version = 1)
 }
 \references{
-
-
 \href{https://doi.org/10.1093/jjfinec/nbaa013}{Bayer & Dimitriadis (2020)}
 }
