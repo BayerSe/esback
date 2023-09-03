@@ -22,7 +22,7 @@ The esback package contains functions for backtesting expected shortfall forecas
 
 Authors:
 \itemize{
-  \item Timo Dimitriadis \email{timo.dimitriadis@h-its.org}
+  \item Timo Dimitriadis \email{timo.dimitriadis@awi.uni-heidelberg.de}
 }
 
 }
