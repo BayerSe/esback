@@ -17,7 +17,7 @@
 #' e <- risk_forecasts$e
 #' s <- risk_forecasts$s
 #' er_backtest(r = r, q = q, e = e, s = s)
-#' @references [McNeil & Frey (2000)](\doi("10.1016/S0927-5398(00)00012-8"))
+#' @references [McNeil & Frey (2000)](\doi{10.1016/S0927-5398(00)00012-8})
 #' @export
 #' @md
 er_backtest <- function(r, q, e, s = NULL, B = 1000) {
@@ -160,7 +160,7 @@ cc_backtest <- function(r, q, e, s=NULL, alpha, hommel=TRUE) {
 #' q <- risk_forecasts$q
 #' e <- risk_forecasts$e
 #' esr_backtest(r = r, q = q, e = e, alpha = 0.025, version = 1)
-#' @references [Bayer & Dimitriadis (2020)](\doi("10.1093/jjfinec/nbaa013"))
+#' @references [Bayer & Dimitriadis (2020)](\doi{10.1093/jjfinec/nbaa013})
 #' @export
 #' @md
 esr_backtest <- function(r, q, e, alpha, version, B = 0,
