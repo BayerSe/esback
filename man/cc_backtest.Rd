@@ -30,8 +30,7 @@ Returns a list with the following components:
 }
 }
 \description{
-The simple and general conditional calibration backtests of
-\href{https://projecteuclid.org/euclid.aoas/1514430265}{Nolde & Ziegel (2007)}.
+The simple and general conditional calibration backtests of Nolde & Ziegel (2007).
 }
 \examples{
 data(risk_forecasts)
@@ -42,5 +41,5 @@ s <- risk_forecasts$s
 cc_backtest(r = r, q = q, e = e, s = s, alpha = 0.025)
 }
 \references{
-\href{https://projecteuclid.org/euclid.aoas/1514430265}{Nolde & Ziegel (2007)}
+Nolde & Ziegel (2007) \doi{10.1214/17-AOAS1041}
 }

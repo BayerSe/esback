@@ -39,5 +39,5 @@ s <- risk_forecasts$s
 er_backtest(r = r, q = q, e = e, s = s)
 }
 \references{
-\href{\doi{10.1016/S0927-5398(00)00012-8}}{McNeil & Frey (2000)}
+McNeil & Frey (2000) \doi{10.1016/S0927-5398(00)00012-8}
 }
